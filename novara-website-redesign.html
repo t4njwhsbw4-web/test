@@ -141,6 +141,19 @@ nav{position:sticky;top:0;z-index:100;background:rgba(26,26,26,.92);backdrop-fil
 @media(max-width:900px){.steps{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){.steps{grid-template-columns:1fr}}
 
+/* ============ ZAHLEN ============ */
+.stats{background:var(--ink);color:var(--white);padding:88px 0;position:relative;overflow:hidden}
+.stats::after{content:"";position:absolute;left:-180px;bottom:-280px;width:580px;height:580px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(247,146,208,.14),transparent 65%)}
+.stats .wrap{position:relative;z-index:1}
+.stats .eyebrow{margin-bottom:46px}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px}
+.stat-item{border-top:2px solid rgba(255,255,255,.12);padding-top:28px;transition:border-color .3s}
+.stat-item:hover{border-color:var(--pink)}
+.stat-num{font-family:var(--display);font-weight:800;font-size:clamp(38px,5vw,60px);line-height:1;color:var(--pink);letter-spacing:-0.02em;font-variant-numeric:tabular-nums}
+.stat-label{margin-top:16px;color:rgba(255,255,255,.65);font-size:16px}
+@media(max-width:800px){.stat-grid{grid-template-columns:1fr;gap:34px}}
+
 /* ============ REFERENZEN ============ */
 .ref{background:var(--grey-1)}
 .q-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
@@ -367,6 +380,26 @@ footer{background:#141414;color:rgba(255,255,255,.65);padding:72px 0 36px;font-s
   </div>
 </section>
 
+<section class="stats">
+  <div class="wrap">
+    <span class="eyebrow reveal">Novara in Zahlen</span>
+    <div class="stat-grid">
+      <div class="stat-item reveal">
+        <div class="stat-num" data-to="2000000" data-suffix="+" data-group="1">0</div>
+        <div class="stat-label">Views für unsere Kunden generiert</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-num" data-to="80" data-suffix="+">0</div>
+        <div class="stat-label">Videos produziert und veröffentlicht</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-num" data-to="24" data-suffix=" h">0</div>
+        <div class="stat-label">Antwortzeit auf jede Anfrage</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="ref" id="referenzen">
   <div class="wrap">
     <div class="sec-head reveal">
@@ -582,6 +615,34 @@ footer{background:#141414;color:rgba(255,255,255,.65);padding:72px 0 36px;font-s
     entries.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target)}});
   },{threshold:0.12});
   els.forEach(function(e){io.observe(e)});
+})();
+
+(function(){
+  var els=document.querySelectorAll('.stat-num');
+  if(!els.length)return;
+  var still=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function fmt(el,v){
+    var s=Math.round(v).toString();
+    if(el.getAttribute('data-group')==='1'){s=s.replace(/\B(?=(\d{3})+(?!\d))/g,'’')}
+    return s+(el.getAttribute('data-suffix')||'');
+  }
+  function run(el){
+    var to=parseFloat(el.getAttribute('data-to'))||0;
+    if(still){el.textContent=fmt(el,to);return}
+    var t0=null,dur=1400;
+    function step(ts){
+      if(t0===null)t0=ts;
+      var p=Math.min((ts-t0)/dur,1);
+      el.textContent=fmt(el,to*(1-Math.pow(1-p,3)));
+      if(p<1)requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  if(still||!('IntersectionObserver' in window)){els.forEach(run);return}
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){if(en.isIntersecting){io.unobserve(en.target);run(en.target)}});
+  },{threshold:0.4});
+  els.forEach(function(el){io.observe(el)});
 })();
 </script>
 </body>
