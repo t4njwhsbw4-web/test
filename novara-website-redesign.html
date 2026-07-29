@@ -168,25 +168,43 @@ nav{position:sticky;top:0;z-index:100;background:rgba(26,26,26,.92);backdrop-fil
 
 /* ============ PREISE ============ */
 .pricing{background:var(--white)}
-.free-banner{background:var(--ink);color:var(--white);border-radius:22px;padding:40px 44px;margin-bottom:56px;display:flex;align-items:center;gap:26px;flex-wrap:wrap;justify-content:space-between}
-.free-banner h3{font-size:clamp(22px,3vw,30px)}
+.free-banner{background:var(--ink);color:var(--white);border-radius:26px;padding:60px 56px;margin-bottom:72px;display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center;position:relative;overflow:hidden}
+.free-banner::after{content:"";position:absolute;right:-200px;top:-240px;width:600px;height:600px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(247,146,208,.16),transparent 65%)}
+.free-main,.free-incl{position:relative;z-index:1}
+.free-kicker{display:inline-flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--pink);margin-bottom:18px}
+.free-kicker::before{content:"";width:26px;height:2px;background:var(--pink)}
+.free-banner h3{font-size:clamp(34px,5.4vw,56px);line-height:1.05;margin-bottom:20px}
 .free-banner h3 .accent{color:var(--pink)}
-.free-banner p{color:rgba(255,255,255,.7);max-width:520px;font-size:16px}
-.price-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px}
-.plan{border:1.5px solid var(--grey-2);border-radius:24px;padding:44px 40px;display:flex;flex-direction:column;transition:transform .25s, box-shadow .25s, border-color .25s}
+.free-banner p{color:rgba(255,255,255,.7);max-width:560px;font-size:17px;margin-bottom:32px}
+.free-incl{border-left:1px solid rgba(255,255,255,.12);padding-left:44px}
+.free-incl-title{display:block;font-family:var(--display);font-weight:700;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:20px}
+.free-list{list-style:none}
+.free-list li{padding:10px 0 10px 32px;position:relative;font-size:16px;color:rgba(255,255,255,.85)}
+.price-head{text-align:center;max-width:640px;margin:0 auto 44px}
+.price-head h3{font-size:clamp(26px,3.4vw,34px);margin-bottom:10px}
+.price-head p{color:var(--grey-3);font-size:17px}
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;align-items:stretch}
+.plan{border:1.5px solid var(--grey-2);border-radius:24px;padding:44px 34px;display:flex;flex-direction:column;position:relative;transition:transform .25s, box-shadow .25s, border-color .25s}
+.plan.featured{border:2px solid var(--pink);box-shadow:0 26px 60px rgba(26,26,26,.10)}
+.plan-badge{position:absolute;top:-15px;left:50%;transform:translateX(-50%);background:var(--pink);color:var(--ink);font-family:var(--display);font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;padding:8px 20px;border-radius:999px;white-space:nowrap}
 .plan:hover{transform:translateY(-6px);box-shadow:0 26px 60px rgba(26,26,26,.10);border-color:var(--pink)}
 .plan .tag{font-family:var(--display);font-weight:700;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--pink);margin-bottom:14px}
 .plan h3{font-size:24px;margin-bottom:8px}
-.plan .price{font-family:var(--display);font-weight:800;font-size:42px;margin:18px 0 4px}
-.plan .price small{font-size:15px;color:var(--grey-3);font-weight:500}
+.plan .price{font-family:var(--display);font-weight:800;font-size:38px;margin:18px 0 4px;letter-spacing:-0.02em}
+.plan .price small{display:block;margin-top:6px;font-size:15px;color:var(--grey-3);font-weight:500;letter-spacing:0}
 .plan ul{list-style:none;margin:26px 0 34px;flex:1}
 .plan li{padding:9px 0 9px 32px;position:relative;color:var(--grey-3);font-size:16px;border-bottom:1px solid var(--grey-1)}
-.plan li::before{content:"";position:absolute;left:0;top:14px;width:18px;height:18px;border-radius:50%;background:var(--pink);
+.plan li::before,.free-list li::before{content:"";position:absolute;left:0;top:14px;width:18px;height:18px;border-radius:50%;background:var(--pink);
   -webkit-mask:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>') center/contain no-repeat;
   mask:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>') center/contain no-repeat}
 .plan .btn{text-align:center}
+.free-list li::before{top:16px}
 .pricing-note{text-align:center;color:var(--grey-3);margin-top:36px;font-size:16px}
-@media(max-width:800px){.price-grid{grid-template-columns:1fr}}
+@media(max-width:1000px){.free-banner{grid-template-columns:1fr;gap:38px;padding:48px 40px}
+  .free-incl{border-left:0;border-top:1px solid rgba(255,255,255,.12);padding-left:0;padding-top:32px}}
+@media(max-width:900px){.price-grid{grid-template-columns:1fr;max-width:520px;margin:0 auto;row-gap:38px}.plan.featured{order:-1}}
+@media(max-width:600px){.free-banner{padding:40px 26px}}
 
 /* ============ TEAM ============ */
 .team{background:var(--grey-1)}
@@ -400,6 +418,7 @@ footer{background:#141414;color:rgba(255,255,255,.65);padding:72px 0 36px;font-s
   </div>
 </section>
 
+
 <section class="ref" id="referenzen">
   <div class="wrap">
     <div class="sec-head reveal">
@@ -436,6 +455,7 @@ footer{background:#141414;color:rgba(255,255,255,.65);padding:72px 0 36px;font-s
   </div>
 </section>
 
+
 <section class="partner" id="partner">
   <div class="wrap">
     <div class="sec-head reveal">
@@ -463,41 +483,71 @@ footer{background:#141414;color:rgba(255,255,255,.65);padding:72px 0 36px;font-s
       <h2>Fair, transparent und ohne Risiko.</h2>
     </div>
     <div class="free-banner reveal">
-      <div>
+      <div class="free-main">
+        <span class="free-kicker">Ihr Start bei Novara</span>
         <h3>Der erste Monat ist <span class="accent">kostenlos.</span></h3>
         <p>Warum gratis? Ganz einfach: Wir möchten Sie zuerst mit unserer Arbeit überzeugen. Sie testen uns einen Monat lang ohne Risiko – und entscheiden erst danach, ob Sie mit uns weitermachen möchten.</p>
+        <a class="btn btn-pink" href="/kontakt">Gratismonat sichern</a>
       </div>
-      <a class="btn btn-pink" href="#kontakt">Gratismonat sichern</a>
-    </div>
-    <div class="price-grid">
-      <div class="plan reveal">
-        <span class="tag">Einmalig</span>
-        <h3>Einstiegsmonat</h3>
-        <div class="price">CHF 189.50 <small>· einmalig</small></div>
-        <ul>
+      <div class="free-incl">
+        <span class="free-incl-title">Im Gratismonat enthalten</span>
+        <ul class="free-list">
           <li>Einrichtung von Instagram und TikTok</li>
-          <li>Profil verbessern (Bio, Profilbild, Highlights)</li>
+          <li>Profil-Optimierung (Bio, Profilbild, Highlights)</li>
           <li>3 Videos (Reels oder TikTok)</li>
           <li>Monatsübersicht / Report</li>
           <li>Direkter Ansprechpartner</li>
         </ul>
-        <a class="btn btn-pink" href="#kontakt">Jetzt starten</a>
-      </div>
-      <div class="plan reveal">
-        <span class="tag">Monatlich</span>
-        <h3>Monatliche Betreuung</h3>
-        <div class="price">Individuell <small>· nach Angebot</small></div>
-        <ul>
-          <li>Planung von Social Media Posts</li>
-          <li>ca. 6 Videos pro Monat</li>
-          <li>Professioneller Videoschnitt</li>
-          <li>Texte für Beiträge schreiben</li>
-          <li>Monatlicher Report &amp; Analyse – und mehr</li>
-        </ul>
-        <a class="btn btn-ghost-dark" href="#kontakt">Angebot anfragen</a>
       </div>
     </div>
-    <p class="pricing-note">Unser Angebot wird individuell an Unternehmen, Budget und Ziele angepasst.</p>
+    <div class="price-head reveal">
+      <h3>Ab dem zweiten Monat</h3>
+      <p>Nur wenn Sie nach dem Gratismonat weitermachen möchten.</p>
+    </div>
+    <div class="price-grid">
+      <div class="plan reveal">
+        <span class="tag">Paket 1</span>
+        <h3>Start</h3>
+        <div class="price">CHF 440 <small>· pro Monat</small></div>
+        <ul>
+          <li>3 Reels pro Monat</li>
+          <li>1 Drehtag alle 2 Monate</li>
+          <li>Community-Management (Kommentare und Nachrichten): Anfragen bis 19:00 Uhr werden am selben Werktag beantwortet</li>
+          <li>Mindestlaufzeit 3 Monate</li>
+        </ul>
+        <a class="btn btn-ghost-dark" href="/kontakt">Jetzt starten</a>
+      </div>
+      <div class="plan featured reveal">
+        <span class="plan-badge">Beliebteste Wahl</span>
+        <span class="tag">Paket 2</span>
+        <h3>Wachstum</h3>
+        <div class="price">CHF 740 <small>· pro Monat</small></div>
+        <ul>
+          <li>6 Reels pro Monat</li>
+          <li>1 Drehtag pro Monat</li>
+          <li>Stories laufend aus dem Drehmaterial</li>
+          <li>Community-Management: Anfragen bis 19:00 Uhr werden am selben Werktag beantwortet</li>
+          <li>Monatlicher Report: Reichweite, Aufrufe, Follower</li>
+          <li>Mindestlaufzeit 3 Monate</li>
+        </ul>
+        <a class="btn btn-pink" href="/kontakt">Jetzt starten</a>
+      </div>
+      <div class="plan reveal">
+        <span class="tag">Paket 3</span>
+        <h3>Vollbetreuung</h3>
+        <div class="price">CHF 1’240 <small>· pro Monat</small></div>
+        <ul>
+          <li>10 Reels pro Monat</li>
+          <li>2 Drehtage pro Monat</li>
+          <li>Stories laufend</li>
+          <li>Community-Management mit Vorrang – auch bei kurzfristigen Wünschen</li>
+          <li>Monatlicher Report plus Strategiegespräch</li>
+          <li>Mindestlaufzeit 3 Monate</li>
+        </ul>
+        <a class="btn btn-ghost-dark" href="/kontakt">Jetzt starten</a>
+      </div>
+    </div>
+    <p class="pricing-note">Der Gratismonat ist unverbindlich. Die Mindestlaufzeit von 3 Monaten gilt erst ab dem gewählten Paket.</p>
   </div>
 </section>
 
