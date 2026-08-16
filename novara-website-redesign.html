@@ -269,6 +269,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(26,26,26,.92);backdrop-fil
 .f-send{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
 .cta-form .btn{border:none;cursor:pointer}
 .f-reply{color:rgba(255,255,255,.55);font-size:14.5px}
+.f-bot{display:none!important}
 .cta-form .f-status{margin:18px 0 0;font-size:15.5px;color:var(--pink)}
 @media(max-width:900px){.cta-grid{grid-template-columns:1fr;gap:44px}.f-row{grid-template-columns:1fr}}
 @media(max-width:600px){.plan-custom{padding:32px 26px}}
@@ -706,6 +707,7 @@ footer{background:#141414;color:rgba(255,255,255,.65);padding:72px 0 36px;font-s
           <label>Unternehmen (optional)<input type="text" name="firma" autocomplete="organization"></label>
           <label>Telefon / WhatsApp (optional)<input type="tel" name="telefon" autocomplete="tel"></label>
         </div>
+        <input type="checkbox" name="botcheck" class="f-bot" tabindex="-1" autocomplete="off">
         <label>Ihre Nachricht<textarea name="nachricht" rows="5" required placeholder="Womit können wir helfen? (z.&nbsp;B. Instagram, TikTok, Facebook, Drehtag, Gratismonat …)"></textarea></label>
         <p class="f-note">Mit dem Absenden stimmen Sie zu, dass wir Ihre Angaben zur Beantwortung Ihrer Anfrage verwenden. Details in der <a href="#datenschutz">Datenschutzerklärung</a>.</p>
         <div class="f-send">
