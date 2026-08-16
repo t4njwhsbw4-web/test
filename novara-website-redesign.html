@@ -197,6 +197,9 @@ nav{position:sticky;top:0;z-index:100;background:rgba(26,26,26,.92);backdrop-fil
 .plan h3{font-size:24px;margin-bottom:8px}
 .plan .price{font-family:var(--display);font-weight:800;font-size:38px;margin:18px 0 4px;letter-spacing:-0.02em}
 .plan .price small{display:block;margin-top:6px;font-size:15px;color:var(--grey-3);font-weight:500;letter-spacing:0}
+.plan-desc{color:var(--grey-3);font-size:15.5px;margin-bottom:2px}
+.plan .price.price-ask{font-size:26px}
+.pricing-sub{display:inline-block;margin-top:10px;font-size:15px;color:var(--grey-3);opacity:.85}
 .plan ul{list-style:none;margin:26px 0 34px;flex:1}
 .plan li{padding:9px 0 9px 32px;position:relative;color:var(--grey-3);font-size:16px;border-bottom:1px solid var(--grey-1)}
 .plan li::before,.free-list li::before{content:"";position:absolute;left:0;top:14px;width:18px;height:18px;border-radius:50%;background:var(--pink);
@@ -285,7 +288,7 @@ footer{background:#141414;color:rgba(255,255,255,.65);padding:72px 0 36px;font-s
       <li><a href="#prozess">Prozess</a></li>
       <li><a href="#referenzen">Referenzen</a></li>
       <li><a href="#team">Team</a></li>
-      <li><a href="#preise">Preise</a></li>
+      <li><a href="#preise">Pakete</a></li>
       <li><a href="#kontakt" class="nav-cta">Projekt starten</a></li>
     </ul>
   </div>
@@ -528,7 +531,7 @@ footer{background:#141414;color:rgba(255,255,255,.65);padding:72px 0 36px;font-s
 <section class="pricing" id="preise">
   <div class="wrap">
     <div class="sec-head reveal">
-      <span class="eyebrow">Preise</span>
+      <span class="eyebrow">Pakete</span>
       <h2>Fair, transparent und ohne Risiko.</h2>
     </div>
     <div class="free-banner reveal">
@@ -536,7 +539,7 @@ footer{background:#141414;color:rgba(255,255,255,.65);padding:72px 0 36px;font-s
         <span class="free-kicker">Ihr Start bei Novara</span>
         <h3>Der erste Monat ist <span class="accent">kostenlos.</span></h3>
         <p>Warum gratis? Ganz einfach: Wir möchten Sie zuerst mit unserer Arbeit überzeugen. Sie testen uns einen Monat lang ohne Risiko – und entscheiden erst danach, ob Sie mit uns weitermachen möchten.</p>
-        <a class="btn btn-pink" href="/kontakt">Gratismonat sichern</a>
+        <a class="btn btn-pink" href="mailto:novaramedia.team@gmail.com?subject=Gratismonat%20sichern">Gratismonat sichern</a>
       </div>
       <div class="free-incl">
         <span class="free-incl-title">Im Gratismonat enthalten</span>
@@ -557,46 +560,49 @@ footer{background:#141414;color:rgba(255,255,255,.65);padding:72px 0 36px;font-s
       <div class="plan reveal">
         <span class="tag">Paket 1</span>
         <h3>Start</h3>
-        <div class="price">CHF 440 <small>· pro Monat</small></div>
+        <p class="plan-desc">Der professionelle Einstieg: regelmässiger Content, ohne Aufwand für Sie.</p>
+        <div class="price price-ask">Preis auf Anfrage <small>· individuell nach Umfang</small></div>
         <ul>
           <li>3 Reels pro Monat</li>
           <li>1 Drehtag alle 2 Monate</li>
           <li>Community-Management (Kommentare und Nachrichten): Anfragen bis 19:00 Uhr werden am selben Werktag beantwortet</li>
           <li>Mindestlaufzeit 3 Monate</li>
         </ul>
-        <a class="btn btn-ghost-dark" href="/kontakt">Jetzt starten</a>
+        <a class="btn btn-ghost-dark" href="mailto:novaramedia.team@gmail.com?subject=Anfrage%20Paket%20Start">Paket anfragen</a>
       </div>
       <div class="plan featured reveal">
         <span class="plan-badge">Beliebteste Wahl</span>
         <span class="tag">Paket 2</span>
         <h3>Wachstum</h3>
-        <div class="price">CHF 740 <small>· pro Monat</small></div>
+        <p class="plan-desc">Mehr Reichweite durch mehr Content und laufende Betreuung.</p>
+        <div class="price price-ask">Preis auf Anfrage <small>· individuell nach Umfang</small></div>
         <ul>
+          <li>Alles aus Start</li>
           <li>6 Reels pro Monat</li>
           <li>1 Drehtag pro Monat</li>
           <li>Stories laufend aus dem Drehmaterial</li>
-          <li>Community-Management: Anfragen bis 19:00 Uhr werden am selben Werktag beantwortet</li>
           <li>Monatlicher Report: Reichweite, Aufrufe, Follower</li>
           <li>Mindestlaufzeit 3 Monate</li>
         </ul>
-        <a class="btn btn-pink" href="/kontakt">Jetzt starten</a>
+        <a class="btn btn-pink" href="mailto:novaramedia.team@gmail.com?subject=Anfrage%20Paket%20Wachstum">Erstgespräch anfragen</a>
       </div>
       <div class="plan reveal">
         <span class="tag">Paket 3</span>
         <h3>Vollbetreuung</h3>
-        <div class="price">CHF 1’240 <small>· pro Monat</small></div>
+        <p class="plan-desc">Maximale Frequenz, Vorrang bei Wünschen und laufende Strategie.</p>
+        <div class="price price-ask">Preis auf Anfrage <small>· individuell nach Umfang</small></div>
         <ul>
+          <li>Alles aus Wachstum</li>
           <li>10 Reels pro Monat</li>
           <li>2 Drehtage pro Monat</li>
-          <li>Stories laufend</li>
           <li>Community-Management mit Vorrang – auch bei kurzfristigen Wünschen</li>
           <li>Monatlicher Report plus Strategiegespräch</li>
           <li>Mindestlaufzeit 3 Monate</li>
         </ul>
-        <a class="btn btn-ghost-dark" href="/kontakt">Jetzt starten</a>
+        <a class="btn btn-ghost-dark" href="mailto:novaramedia.team@gmail.com?subject=Anfrage%20Paket%20Vollbetreuung">Vollbetreuung anfragen</a>
       </div>
     </div>
-    <p class="pricing-note">Der Gratismonat ist unverbindlich. Die Mindestlaufzeit von 3 Monaten gilt erst ab dem gewählten Paket.</p>
+    <p class="pricing-note">Jedes Angebot wird auf Ihr Unternehmen zugeschnitten. Schreiben Sie uns kurz, was Sie vorhaben – wir melden uns innert 24 Stunden mit einem konkreten Angebot.<br><span class="pricing-sub">Unverbindlich · keine Vorauszahlung · der Gratismonat gilt unabhängig vom Paket</span></p>
   </div>
 </section>
 
@@ -656,7 +662,7 @@ footer{background:#141414;color:rgba(255,255,255,.65);padding:72px 0 36px;font-s
           <li><a href="#partner">Partner</a></li>
           <li><a href="#referenzen">Referenzen</a></li>
           <li><a href="#team">Team</a></li>
-          <li><a href="#preise">Preise</a></li>
+          <li><a href="#preise">Pakete</a></li>
         </ul>
       </div>
       <div>
@@ -743,15 +749,15 @@ footer{background:#141414;color:rgba(255,255,255,.65);padding:72px 0 36px;font-s
     </ul>
     <p>Aus dem Gratismonat entsteht keine Verpflichtung zur Weiterführung der Zusammenarbeit. Er endet automatisch, wenn der Kunde nicht ausdrücklich ein Paket nach Ziffer 5 wählt.</p>
 
-    <h3>5. Preise und Pakete</h3>
-    <p>Ab dem zweiten Monat gelten die folgenden Pakete. Alle Preise verstehen sich in Schweizer Franken pro Monat.</p>
-    <p><b>Paket 1 – Start: CHF 440 pro Monat</b></p>
+    <h3>5. Pakete und Preise</h3>
+    <p>Ab dem zweiten Monat stehen die folgenden Pakete zur Auswahl. Der Preis richtet sich nach Umfang und Aufwand und wird im individuellen Angebot festgehalten; massgebend ist die schriftliche Offerte.</p>
+    <p><b>Paket 1 – Start</b></p>
     <ul>
       <li>3 Reels pro Monat</li>
       <li>1 Drehtag alle 2 Monate</li>
       <li>Community-Management: Anfragen bis 19:00 Uhr werden am selben Werktag beantwortet</li>
     </ul>
-    <p><b>Paket 2 – Wachstum: CHF 740 pro Monat</b></p>
+    <p><b>Paket 2 – Wachstum</b></p>
     <ul>
       <li>6 Reels pro Monat</li>
       <li>1 Drehtag pro Monat</li>
@@ -759,7 +765,7 @@ footer{background:#141414;color:rgba(255,255,255,.65);padding:72px 0 36px;font-s
       <li>Community-Management: Anfragen bis 19:00 Uhr werden am selben Werktag beantwortet</li>
       <li>Monatlicher Report: Reichweite, Aufrufe, Follower</li>
     </ul>
-    <p><b>Paket 3 – Vollbetreuung: CHF 1'240 pro Monat</b></p>
+    <p><b>Paket 3 – Vollbetreuung</b></p>
     <ul>
       <li>10 Reels pro Monat</li>
       <li>2 Drehtage pro Monat</li>
@@ -767,7 +773,7 @@ footer{background:#141414;color:rgba(255,255,255,.65);padding:72px 0 36px;font-s
       <li>Community-Management mit Vorrang, auch bei kurzfristigen Wünschen</li>
       <li>Monatlicher Report plus Strategiegespräch</li>
     </ul>
-    <p>Leistungen, die über das gewählte Paket hinausgehen, werden vorgängig besprochen und separat vereinbart. Novara Media behält sich vor, die Preise für künftige Vertragsperioden anzupassen; laufende Vertragsperioden bleiben davon unberührt.</p>
+    <p>Leistungen, die über das gewählte Paket hinausgehen, werden vorgängig besprochen und separat vereinbart. Die vereinbarten Preise bleiben während der laufenden Vertragsperiode unverändert. Anpassungen für künftige Perioden werden vorgängig mitgeteilt.</p>
 
     <h3>6. Zahlungsbedingungen</h3>
     <p>Die Abrechnung erfolgt monatlich. Rechnungen werden jeweils am Ende des Monats erstellt und sind innerhalb von 14 Tagen zu begleichen.</p>
