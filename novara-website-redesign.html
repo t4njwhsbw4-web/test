@@ -200,6 +200,11 @@ nav{position:sticky;top:0;z-index:100;background:rgba(26,26,26,.92);backdrop-fil
 .plan-desc{color:var(--grey-3);font-size:15.5px;margin-bottom:2px}
 .plan .price.price-ask{font-size:26px}
 .pricing-sub{display:inline-block;margin-top:10px;font-size:15px;color:var(--grey-3);opacity:.85}
+.plan-custom{margin-top:26px;background:var(--grey-1);border-radius:24px;padding:40px 44px;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap}
+.plan-custom .tag{font-family:var(--display);font-weight:700;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--pink)}
+.plan-custom h3{font-size:24px;margin:10px 0}
+.plan-custom p{color:var(--grey-3);font-size:16px;max-width:660px}
+.plan-custom .btn{flex-shrink:0}
 .plan ul{list-style:none;margin:26px 0 34px;flex:1}
 .plan li{padding:9px 0 9px 32px;position:relative;color:var(--grey-3);font-size:16px;border-bottom:1px solid var(--grey-1)}
 .plan li::before,.free-list li::before{content:"";position:absolute;left:0;top:14px;width:18px;height:18px;border-radius:50%;background:var(--pink);
@@ -241,6 +246,32 @@ nav{position:sticky;top:0;z-index:100;background:rgba(26,26,26,.92);backdrop-fil
 .cta h2{font-size:clamp(32px,5vw,54px);margin:20px 0 22px;color:var(--white)}
 .cta h2 .accent{color:var(--pink)}
 .cta p{color:rgba(255,255,255,.7);max-width:560px;margin:0 auto 42px;font-size:18px}
+.cta-head{text-align:center;margin-bottom:56px}
+.cta-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;text-align:left;align-items:start}
+.cta-grid p{max-width:none;margin:0}
+.cta-label{display:inline-flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:18px}
+.cta-label::before{content:"";width:26px;height:2px;background:rgba(255,255,255,.3)}
+.cta-direct h3{font-size:18px;color:var(--white);margin-bottom:10px}
+.cta-mail{display:inline-block;font-family:var(--display);font-weight:800;font-size:clamp(19px,2.3vw,26px);color:var(--white);word-break:break-word;transition:color .2s}
+.cta-mail:hover{color:var(--pink)}
+.cta-sep{height:1px;background:rgba(255,255,255,.12);margin:26px 0}
+.cta-loc{color:rgba(255,255,255,.7);font-size:16px}
+.cta-loc b{color:var(--white)}
+.cta-hint{color:rgba(255,255,255,.6);font-size:15.5px}
+.cta-form label{display:block;font-family:var(--display);font-weight:700;font-size:13.5px;color:rgba(255,255,255,.75);margin-bottom:16px}
+.cta-form input,.cta-form textarea{display:block;width:100%;margin-top:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:14px 16px;color:var(--white);font-family:var(--text);font-size:16px;font-weight:400;transition:border-color .2s,background .2s}
+.cta-form input:focus,.cta-form textarea:focus{outline:none;border-color:var(--pink);background:rgba(255,255,255,.08)}
+.cta-form textarea{resize:vertical;min-height:130px}
+.cta-form ::placeholder{color:rgba(255,255,255,.35)}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.cta-form .f-note{color:rgba(255,255,255,.5);font-size:14px;margin:4px 0 20px}
+.f-note a{color:rgba(255,255,255,.8);text-decoration:underline}
+.f-send{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.cta-form .btn{border:none;cursor:pointer}
+.f-reply{color:rgba(255,255,255,.55);font-size:14.5px}
+.cta-form .f-status{margin:18px 0 0;font-size:15.5px;color:var(--pink)}
+@media(max-width:900px){.cta-grid{grid-template-columns:1fr;gap:44px}.f-row{grid-template-columns:1fr}}
+@media(max-width:600px){.plan-custom{padding:32px 26px}}
 
 /* ============ RECHTSTEXTE ============ */
 .legal{display:none;position:fixed;inset:0;z-index:200;background:var(--white);overflow-y:auto;padding:0}
@@ -398,7 +429,7 @@ footer{background:#141414;color:rgba(255,255,255,.65);padding:72px 0 36px;font-s
       <div class="step reveal">
         <span class="n">01</span>
         <h3>Strategie</h3>
-        <p>Wir analysieren Ihr Angebot und Ihre Mitbewerber in der Region und entwickeln die perfekte Strategie für Instagram &amp; TikTok.</p>
+        <p>Wir analysieren Ihr Angebot und Ihre Mitbewerber in der Region und entwickeln die perfekte Strategie für Instagram, TikTok und – wenn es passt – Facebook.</p>
       </div>
       <div class="step reveal">
         <span class="n">02</span>
@@ -602,6 +633,14 @@ footer{background:#141414;color:rgba(255,255,255,.65);padding:72px 0 36px;font-s
         <a class="btn btn-ghost-dark" href="mailto:novaramedia.team@gmail.com?subject=Anfrage%20Paket%20Vollbetreuung">Vollbetreuung anfragen</a>
       </div>
     </div>
+    <div class="plan-custom reveal">
+      <div>
+        <span class="tag">Individuell</span>
+        <h3>Brauchen Sie mehr?</h3>
+        <p>Mehr Drehtage, ein Event, eine Kampagne oder zusätzliche Plattformen wie Facebook, YouTube Shorts oder LinkedIn: Wenn keines der drei Pakete passt, stellen wir Ihnen eines zusammen, das passt.</p>
+      </div>
+      <a class="btn btn-pink" href="mailto:novaramedia.team@gmail.com?subject=Individuelles%20Angebot">Individuelles Angebot anfragen</a>
+    </div>
     <p class="pricing-note">Jedes Angebot wird auf Ihr Unternehmen zugeschnitten. Schreiben Sie uns kurz, was Sie vorhaben – wir melden uns innert 24 Stunden mit einem konkreten Angebot.<br><span class="pricing-sub">Unverbindlich · keine Vorauszahlung · der Gratismonat gilt unabhängig vom Paket</span></p>
   </div>
 </section>
@@ -634,16 +673,48 @@ footer{background:#141414;color:rgba(255,255,255,.65);padding:72px 0 36px;font-s
         <summary>Was passiert an einem Drehtag?</summary>
         <p>Wir kommen zu Ihnen und filmen in wenigen Stunden das gesamte Videomaterial für einen Monat – geplant im Voraus, effizient umgesetzt und abgestimmt auf Ihre Marke.</p>
       </details>
+        <details>
+          <summary>Nur Instagram und TikTok – oder auch andere Plattformen?</summary>
+          <p>Unser Schwerpunkt liegt auf Instagram und TikTok, weil dort für lokale Unternehmen am meisten Reichweite entsteht. Facebook, YouTube Shorts oder LinkedIn bedienen wir auf Wunsch mit demselben Drehmaterial mit – sagen Sie uns einfach, wo Sie sichtbar sein möchten.</p>
+        </details>
     </div>
   </div>
 </section>
 
 <section class="cta" id="kontakt">
   <div class="wrap">
-    <span class="eyebrow">Kontakt</span>
-    <h2>Bereit für den Schritt<br>in die <span class="accent">neue Ära?</span></h2>
-    <p>Erzählen Sie uns von Ihrem Unternehmen – wir zeigen Ihnen unverbindlich, was auf TikTok und Instagram möglich ist.</p>
-    <a class="btn btn-pink" href="mailto:novaramedia.team@gmail.com">novaramedia.team@gmail.com</a>
+    <div class="cta-head">
+      <span class="eyebrow">Kontakt</span>
+      <h2>Bereit für den Schritt<br>in die <span class="accent">neue Ära?</span></h2>
+    </div>
+    <div class="cta-grid">
+      <div class="cta-direct reveal">
+        <span class="cta-label">Direkt</span>
+        <h3>Schreiben Sie uns</h3>
+        <a class="cta-mail" href="mailto:novaramedia.team@gmail.com">novaramedia.team@gmail.com</a>
+        <div class="cta-sep"></div>
+        <p class="cta-loc"><b>Novara Media</b><br>Widnau und Goldach, St. Gallen<br>Schweiz</p>
+        <div class="cta-sep"></div>
+        <p class="cta-hint">Lieber kurz? Ein, zwei Sätze genügen. Wir melden uns innert 24 Stunden.</p>
+      </div>
+      <form class="cta-form reveal" id="nv-form">
+        <div class="f-row">
+          <label>Name<input type="text" name="name" autocomplete="name" required></label>
+          <label>E-Mail<input type="email" name="email" autocomplete="email" required></label>
+        </div>
+        <div class="f-row">
+          <label>Unternehmen (optional)<input type="text" name="firma" autocomplete="organization"></label>
+          <label>Telefon / WhatsApp (optional)<input type="tel" name="telefon" autocomplete="tel"></label>
+        </div>
+        <label>Ihre Nachricht<textarea name="nachricht" rows="5" required placeholder="Womit können wir helfen? (z.&nbsp;B. Instagram, TikTok, Facebook, Drehtag, Gratismonat …)"></textarea></label>
+        <p class="f-note">Mit dem Absenden stimmen Sie zu, dass wir Ihre Angaben zur Beantwortung Ihrer Anfrage verwenden. Details in der <a href="#datenschutz">Datenschutzerklärung</a>.</p>
+        <div class="f-send">
+          <button type="submit" class="btn btn-pink">Nachricht senden →</button>
+          <span class="f-reply">Wir antworten innert 24 Stunden.</span>
+        </div>
+        <p class="f-status" id="nv-form-status"></p>
+      </form>
+    </div>
   </div>
 </section>
 
@@ -885,6 +956,9 @@ footer{background:#141414;color:rgba(255,255,255,.65);padding:72px 0 36px;font-s
   },{threshold:0.4});
   els.forEach(function(el){io.observe(el)});
 })();
+
+function nvform(){var f=document.getElementById('nv-form');if(!f||f.getAttribute('data-nv')==='1')return;f.setAttribute('data-nv','1');f.addEventListener('submit',function(e){e.preventDefault();var v=function(n){var el=f.elements[n];return el&&el.value?el.value.trim():''};var nm=v('name'),ma=v('email'),fi=v('firma'),te=v('telefon'),ms=v('nachricht');if(!nm||!ma||!ms){if(f.reportValidity)f.reportValidity();return}var NL=String.fromCharCode(10);var b='Name: '+nm+NL+'E-Mail: '+ma;if(fi)b+=NL+'Unternehmen: '+fi;if(te)b+=NL+'Telefon/WhatsApp: '+te;b+=NL+NL+'Nachricht:'+NL+ms;var st=document.getElementById('nv-form-status');if(st)st.textContent='Ihr E-Mail-Programm öffnet sich mit der fertigen Nachricht an novaramedia.team@gmail.com – bitte dort noch auf Senden klicken.';window.location.href='mailto:novaramedia.team@gmail.com?subject='+encodeURIComponent('Anfrage von '+nm)+'&body='+encodeURIComponent(b)})}
+nvform();
 </script>
 </body>
 </html>
