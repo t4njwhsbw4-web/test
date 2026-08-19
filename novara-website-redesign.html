@@ -163,12 +163,13 @@ nav{position:sticky;top:0;z-index:100;background:rgba(26,26,26,.92);backdrop-fil
   background:radial-gradient(circle,rgba(247,146,208,.14),transparent 65%)}
 .stats .wrap{position:relative;z-index:1}
 .stats .eyebrow{margin-bottom:46px}
-.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px}
+.stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px}
 .stat-item{border-top:2px solid rgba(255,255,255,.12);padding-top:28px;transition:border-color .3s}
 .stat-item:hover{border-color:var(--pink)}
-.stat-num{font-family:var(--display);font-weight:800;font-size:clamp(38px,5vw,60px);line-height:1;color:var(--pink);letter-spacing:-0.02em;font-variant-numeric:tabular-nums}
+.stat-num{font-family:var(--display);font-weight:800;font-size:clamp(30px,3.1vw,42px);line-height:1;color:var(--pink);letter-spacing:-0.02em;font-variant-numeric:tabular-nums}
 .stat-label{margin-top:16px;color:rgba(255,255,255,.65);font-size:16px}
-@media(max-width:800px){.stat-grid{grid-template-columns:1fr;gap:34px}}
+@media(max-width:1000px){.stat-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:38px}.stat-num{font-size:clamp(34px,5vw,52px)}}
+@media(max-width:560px){.stat-grid{grid-template-columns:1fr;gap:34px}}
 
 /* ============ REFERENZEN ============ */
 .ref{background:var(--grey-1)}
@@ -237,12 +238,19 @@ nav{position:sticky;top:0;z-index:100;background:rgba(26,26,26,.92);backdrop-fil
 /* ============ TEAM ============ */
 .team{background:var(--grey-1)}
 .team-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;max-width:900px}
-.member{background:var(--white);border-radius:22px;padding:40px 36px;box-shadow:0 10px 34px rgba(26,26,26,.06)}
-.member .avatar{width:64px;height:64px;border-radius:50%;background:var(--ink);color:var(--white);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:20px;margin-bottom:22px}
+.member{background:var(--white);border-radius:22px;overflow:hidden;box-shadow:0 10px 34px rgba(26,26,26,.06);display:flex;flex-direction:column;transition:transform .25s ease, box-shadow .25s ease}
+.member:hover{transform:translateY(-6px);box-shadow:0 24px 50px rgba(26,26,26,.10)}
+.m-photo{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:var(--grey-2)}
+.m-body{padding:30px 32px 34px}
 .member h3{font-size:20px}
-.member .role{color:var(--pink);font-family:var(--display);font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;margin:6px 0 16px}
+.member .role{color:var(--pink);font-family:var(--display);font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;margin:6px 0 14px}
+.m-bio{color:var(--grey-3);font-size:15.5px;margin-bottom:18px}
+.m-ke{display:inline-flex;align-items:center;gap:7px;background:rgba(108,99,255,.10);color:#4B45C6;border:1px solid rgba(108,99,255,.28);border-radius:999px;padding:6px 14px;font-family:var(--display);font-weight:700;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px}
+.m-ke b{font-weight:800}
 .member a{color:var(--grey-3);font-size:15.5px;border-bottom:1px solid var(--grey-2);transition:color .2s,border-color .2s}
 .member a:hover{color:var(--ink);border-color:var(--pink)}
+.member .m-ke-link{color:#4B45C6;font-family:var(--display);font-weight:700;border-color:rgba(108,99,255,.35)}
+.member .m-ke-link:hover{color:#3A34A8;border-color:#4B45C6}
 @media(max-width:700px){.team-grid{grid-template-columns:1fr}}
 
 /* ============ FAQ ============ */
@@ -482,6 +490,10 @@ footer{background:#141414;color:rgba(255,255,255,.65);padding:72px 0 36px;font-s
     <span class="eyebrow reveal">Novara in Zahlen</span>
     <div class="stat-grid">
       <div class="stat-item reveal">
+        <div class="stat-num" data-to="4">0</div>
+        <div class="stat-label">Jahre Erfahrung</div>
+      </div>
+      <div class="stat-item reveal">
         <div class="stat-num" data-to="2000000" data-suffix="+" data-group="1">0</div>
         <div class="stat-label">Views generiert</div>
       </div>
@@ -567,18 +579,24 @@ footer{background:#141414;color:rgba(255,255,255,.65);padding:72px 0 36px;font-s
     </div>
     <div class="team-grid">
       <div class="member reveal">
-        <div class="avatar">LJ</div>
-        <h3>Luka Jovkic</h3>
-        <p class="role">Administration &amp; Organisation</p>
-        <a href="mailto:jovkic.novara@gmail.com">jovkic.novara@gmail.com</a>
+        <img class="m-photo" src="https://static.wixstatic.com/media/db768b_223552f3ba6d451aa1e5b896e848bfdf~mv2.jpg" alt="Luka Jovkic" loading="lazy">
+        <div class="m-body">
+          <h3>Luka Jovkic</h3>
+          <p class="role">Administration &amp; Organisation</p>
+          <p class="m-bio">Luka hält die Organisation zusammen: Kundenkontakt, Planung der Drehtage und alles, was im Hintergrund laufen muss. Er ist in der Ausbildung zum Speditionskaufmann und spielt seit zehn Jahren Tennis – Ausdauer und Planung bringt er von dort mit.</p>
+          <a href="mailto:jovkic.novara@gmail.com">jovkic.novara@gmail.com</a>
+        </div>
       </div>
       <div class="member reveal">
-        <div class="avatar">JD</div>
-        <h3>Jano Deubelbeiss</h3>
-        <p class="role">Webseiten &amp; Technik</p>
-        <a href="mailto:deubelbeiss.novara@gmail.com">deubelbeiss.novara@gmail.com</a>
+        <img class="m-photo" src="https://static.wixstatic.com/media/db768b_3056629e604d4686a6bb9ce4c0d0fa6a~mv2.jpg" alt="Keyse Adam Swiss" loading="lazy">
+        <div class="m-body">
+          <h3>Keyse Adam Swiss</h3>
+          <p class="role">Webseiten &amp; Technik</p>
+          <span class="m-ke"><b>KEY</b> ENTERPRISES</span>
+          <p class="m-bio">Keyse verantwortet bei Novara alles rund um Websites und Technik. Er besucht eine Privatschule in Luzern, spielt leidenschaftlich Schach und entwickelt Websites – mit seiner eigenen Firma Key Enterprises, die zugleich unser Partner ist.</p>
+          <a class="m-ke-link" href="https://keyenterprises.ch" target="_blank" rel="noopener">keyenterprises.ch →</a>
+        </div>
       </div>
-    </div>
   </div>
 </section>
 
@@ -796,7 +814,7 @@ footer{background:#141414;color:rgba(255,255,255,.65);padding:72px 0 36px;font-s
     <p>E-Mail: <a href="mailto:novaramedia.team@gmail.com">novaramedia.team@gmail.com</a></p>
     <h3>Vertreten durch das Team von Novara Media</h3>
     <ul>
-      <li><b>Jano Deubelbeiss</b> – Webseiten &amp; technische Betreuung<br><a href="mailto:deubelbeiss.novara@gmail.com">deubelbeiss.novara@gmail.com</a></li>
+      <li><b>Keyse Adam Swiss</b> – Webseiten &amp; Technik, für Novara Media tätig über <a href="https://keyenterprises.ch" target="_blank" rel="noopener">Key Enterprises</a></li>
       <li><b>Luka Jovkic</b> – Administration &amp; Organisation<br><a href="mailto:jovkic.novara@gmail.com">jovkic.novara@gmail.com</a></li>
     </ul>
     <h3>Haftung für Inhalte</h3>
