@@ -36,14 +36,26 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-# Getesteter Parameter-Raum (192 Kombinationen).
+# Getesteter Parameter-Raum, als Vereinigung zweier Grid-Läufe auf den
+# Dev-Daten aller RESEARCH_SYMBOLS:
+#   Runde 1 (192 Kombinationen): engere Einstiege, enge Ausstiege, Trendfilter
+#     lookback [10,20,40] x entry_z [-1.0,-1.5,-2.0,-2.5] x exit_z [-0.5,0.0]
+#     x trend_window [None,200] x max_hold [10,20] x rsi_confirm [None,30]
+#   Runde 2 (162 Kombinationen): höhere Kapitalauslastung, weitere Ausstiege
+#     lookback [5,10,20] x entry_z [-0.5,-1.0,-1.5] x exit_z [0.5,1.0]
+#     x trend_window [None] x max_hold [20,40,60] x rsi_confirm [None,40,50]
+#
+# ERGEBNIS: KEIN Edge gegenüber Buy-and-Hold. Der beste mittlere Sharpe über
+# alle 6 Symbole war 0.586 (lookback=5, entry_z=-1.5, exit_z=1.0, max_hold=40,
+# kein Filter) gegen 0.845 für Buy-and-Hold. Keine der 354 Kombinationen
+# schlug Buy-and-Hold auf mehr als 1 von 6 Symbolen.
 PARAM_GRID: dict[str, list] = {
-    "lookback": [10, 20, 40],
-    "entry_z": [-1.0, -1.5, -2.0, -2.5],
-    "exit_z": [-0.5, 0.0],
+    "lookback": [5, 10, 20, 40],
+    "entry_z": [-0.5, -1.0, -1.5, -2.0, -2.5],
+    "exit_z": [-0.5, 0.0, 0.5, 1.0],
     "trend_window": [None, 200],
-    "max_hold": [10, 20],
-    "rsi_confirm": [None, 30.0],
+    "max_hold": [10, 20, 40, 60],
+    "rsi_confirm": [None, 30.0, 40.0, 50.0],
 }
 
 

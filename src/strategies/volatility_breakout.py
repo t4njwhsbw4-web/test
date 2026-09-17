@@ -127,6 +127,8 @@ def generate_signals(
     return pd.Series(pos, index=df.index, name="signal").astype(int)
 
 
+# Getestet auf period="dev" über alle RESEARCH_SYMBOLS.
+# Grid 1 (288 Kombis): Kanal-Exit dominiert, squeeze_pct=1.0 = Filter aus.
 PARAM_GRID: dict[str, list] = {
     "entry_lookback": [10, 20, 40, 55],
     "exit_lookback": [5, 10, 20],
@@ -137,3 +139,24 @@ PARAM_GRID: dict[str, list] = {
     "atr_mult": [0.0, 0.5],
     "max_hold": [0, 20],
 }
+
+# Grid 2 (162 Kombis): faire Chance für die These "Anpassung braucht mehrere
+# Bars" - kurze Zeit-Exits, strenge Kompression, Kanal-Exit entschärft.
+PARAM_GRID_SHORT_HOLD: dict[str, list] = {
+    "entry_lookback": [10, 20, 40],
+    "exit_lookback": [60],
+    "squeeze_window": [60, 120, 250],
+    "squeeze_pct": [0.2, 0.3, 0.5],
+    "squeeze_metric": ["atr", "bandwidth"],
+    "atr_window": [14],
+    "atr_mult": [0.0],
+    "max_hold": [3, 5, 10],
+}
+
+# ERGEBNIS (ehrlich): Kein Edge. Der Squeeze-Filter - der eigentliche Kern der
+# These - verschlechtert das Ergebnis monoton (mean Sharpe 0.77 ohne Filter ->
+# 0.61 bei squeeze_pct=0.5 -> 0.42 bei 0.3). Von 162 Kombis mit aktivem
+# Squeeze und kurzem Halten schlug KEINE einzige Buy-and-Hold. Was übrig
+# bleibt, wenn man den Filter abschaltet, ist reines Donchian-Trendfolgen mit
+# mean Sharpe 0.90 gegen 0.845 B&H - ein Vorsprung innerhalb des Rauschens,
+# der nur bei 3 von 6 Symbolen auftritt. Details im Bericht.
