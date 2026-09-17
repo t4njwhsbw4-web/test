@@ -139,6 +139,48 @@ def run_grid(returns: dict[str, pd.Series], demean: bool, block: int = BLOCK) ->
     return pd.DataFrame(rows)
 
 
+def empirical_windows(returns: dict[str, pd.Series], horizon: int = HORIZON) -> pd.DataFrame:
+    """Realitaets-Check: wie oft hat sich das Asset historisch in 60 Tagen
+    tatsaechlich verdoppelt/halbiert (ueberlappende Fenster, ungehebelt)?
+
+    Wichtig als Gegenprobe zum Bootstrap: 7-Tage-Bloecke zerschneiden
+    mehrmonatige Bullenlaeufe, der Bootstrap kann P(2x) also unterschaetzen.
+    """
+    rows = []
+    for name, ser in returns.items():
+        g = (1 + ser).to_numpy(dtype=float)
+        lg = np.log(g)
+        c = np.cumsum(lg)
+        w = np.exp(c[horizon:] - c[:-horizon])
+        rows.append(
+            {
+                "Asset": name,
+                "Fenster": len(w),
+                "P(2x) hist": float((w >= 2).mean()),
+                "P(0.5x) hist": float((w <= 0.5).mean()),
+                "Median hist": float(np.median(w)),
+                "Bestes": float(w.max()),
+                "Schlechtestes": float(w.min()),
+            }
+        )
+    return pd.DataFrame(rows).set_index("Asset")
+
+
+def max_pdouble_sweep(returns: dict[str, pd.Series], demean: bool = False) -> pd.DataFrame:
+    """Feiner Hebel-Sweep: wo liegt das Maximum von P(2x) - und was kostet es?"""
+    rows = []
+    for name in ("BTC", "SOL", "PEPE"):
+        if name not in returns:
+            continue
+        r = returns[name].to_numpy(dtype=float)
+        if demean:
+            r = r - r.mean()
+        for lev in (1.0, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 6.0, 8.0, 10.0):
+            res = simulate(r, lev)
+            rows.append({"Asset": name, "Groesse": lev, **res})
+    return pd.DataFrame(rows)
+
+
 # ---------------------------------------------------------------- Teil 4
 def kelly_analysis(returns: np.ndarray, sharpe_ann: float, label: str) -> pd.DataFrame:
     """Hypothetischer Edge: Renditen demeanen und Drift mit Ziel-Sharpe einsetzen.
@@ -254,9 +296,14 @@ def main() -> None:
                pct_cols=("P(2x)_real", "P(2x)_drift0", "Anteil aus Drift",
                          "P(0.5x)_real", "P(0.5x)_drift0")))
 
+    print("\nREALITAETS-CHECK: historische ueberlappende 60-Tage-Fenster (ungehebelt, 1.0x)")
+    print("Der Bootstrap zerschneidet mehrmonatige Trends - diese Zahlen zeigen, "
+          "wie stark das P(2x) nach unten verzerrt.")
+    print(_fmt(empirical_windows(rets), pct_cols=("P(2x) hist", "P(0.5x) hist")))
+
     print("\nSENSITIVITAET Blocklaenge (BTC/SOL/PEPE, Groesse 1.0 und 3.0):")
     sens = []
-    for b in (1, 5, 7, 10):
+    for b in (1, 5, 7, 10, 20, 30, 60):
         g = run_grid({k: v for k, v in rets.items() if k in ("BTC", "SOL", "PEPE")},
                      demean=False, block=b)
         g = g[g["Groesse"].isin([1.0, 3.0])].copy()
@@ -286,11 +333,49 @@ def main() -> None:
                    pct_cols=("P(2x)", "P(0.5x)", "P(Ruin)"), digits=4))
 
     print("\n" + "=" * 110)
-    print("BESTER KOMPROMISS: Konfigurationen sortiert nach P(2x)/P(0.5x) (echte Daten)")
+    print("MEHR RISIKO = MEHR GEWINN? Feiner Hebel-Sweep, Maximum von P(2x) (echte Daten)")
     print("=" * 110)
-    top = real.sort_values("P(2x)/P(0.5x)", ascending=False).head(12)
-    print(_fmt(top[["Asset", "Groesse", "P(2x)", "P(0.5x)", "P(-80%)", "Median", "P(2x)/P(0.5x)"]],
+    sweep = max_pdouble_sweep(rets)
+    print(_fmt(sweep[["Asset", "Groesse", "P(2x)", "P(0.5x)", "P(-80%)", "P(Ruin <1%)",
+                      "Median", "Mittelwert"]],
+               pct_cols=("P(2x)", "P(0.5x)", "P(-80%)", "P(Ruin <1%)")))
+    print("\nMaximum von P(2x) je Asset:")
+    print(_fmt(sweep.loc[sweep.groupby("Asset")["P(2x)"].idxmax()]
+               [["Asset", "Groesse", "P(2x)", "P(0.5x)", "P(-80%)", "Median"]],
                pct_cols=("P(2x)", "P(0.5x)", "P(-80%)")))
+    sweep0 = max_pdouble_sweep(rets, demean=True)
+    print("\nDasselbe Maximum mit Drift = 0 (so viel bleibt ohne historische Aufwaertsdrift):")
+    print(_fmt(sweep0.loc[sweep0.groupby("Asset")["P(2x)"].idxmax()]
+               [["Asset", "Groesse", "P(2x)", "P(0.5x)", "P(-80%)", "P(Ruin <1%)", "Median"]],
+               pct_cols=("P(2x)", "P(0.5x)", "P(-80%)", "P(Ruin <1%)")))
+
+    print("\nROBUSTHEIT: DOGE ohne den einzelnen +355%-Tag (2021-01-28, WSB-Squeeze)")
+    doge = rets["DOGE"]
+    trimmed = doge.drop(doge.idxmax()).to_numpy(dtype=float)
+    for lev in (0.5, 1.0, 2.0):
+        a = simulate(doge.to_numpy(dtype=float), lev)
+        b = simulate(trimmed, lev)
+        print(f"  {lev:.2f}x  P(2x): {a['P(2x)']:.1%} -> {b['P(2x)']:.1%} | "
+              f"P(0.5x): {a['P(0.5x)']:.1%} -> {b['P(0.5x)']:.1%} | "
+              f"Median: {a['Median']:.3f} -> {b['Median']:.3f}")
+
+    print("\n" + "=" * 110)
+    print("BESTER KOMPROMISS: Frontier - hoechstes P(2x) unter Verlust-Nebenbedingungen")
+    print("(echte Daten; Verhaeltnis nur aussagekraeftig, wenn P(0.5x) nicht ~0 ist)")
+    print("=" * 110)
+    for cap in (0.05, 0.10, 0.20):
+        ok = real[real["P(0.5x)"] <= cap]
+        if ok.empty:
+            continue
+        best = ok.loc[ok["P(2x)"].idxmax()]
+        print(f"\n  Nebenbedingung P(halbieren) <= {cap:.0%}  ->  "
+              f"{best['Asset']} @ {best['Groesse']:.2f}x : "
+              f"P(2x)={best['P(2x)']:.1%}, P(0.5x)={best['P(0.5x)']:.1%}, "
+              f"P(-80%)={best['P(-80%)']:.1%}, Median={best['Median']:.3f}")
+        print(_fmt(ok.sort_values("P(2x)", ascending=False).head(5)
+                   [["Asset", "Groesse", "P(2x)", "P(0.5x)", "P(-80%)", "Median",
+                     "P(2x)/P(0.5x)"]],
+                   pct_cols=("P(2x)", "P(0.5x)", "P(-80%)")))
 
 
 if __name__ == "__main__":
