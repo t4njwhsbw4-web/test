@@ -33,13 +33,20 @@ def fetch_ohlcv(
     path = _cache_path(cache_dir, symbol, interval)
     path.parent.mkdir(parents=True, exist_ok=True)
 
+    requested_start = pd.Timestamp(datetime.utcnow().date() - timedelta(days=history_days))
+
     if path.exists() and not force_refresh:
         cached = pd.read_parquet(path)
-        latest = cached.index.max()
-        if latest is not None and latest >= pd.Timestamp.utcnow().tz_localize(None) - timedelta(days=1):
+        fresh_enough = cached.index.max() >= pd.Timestamp.utcnow().tz_localize(None) - timedelta(days=1)
+        # Der Cache muss auch den angeforderten Zeitraum abdecken - sonst
+        # liefert eine Anfrage über 6 Jahre stillschweigend die 2 Jahre,
+        # die ein früherer Aufruf gecached hat. Toleranz, weil der erste
+        # verfügbare Bar je nach Listing-Datum später liegen kann.
+        covers_history = cached.index.min() <= requested_start + timedelta(days=7)
+        if fresh_enough and covers_history:
             return cached
 
-    start = (datetime.utcnow() - timedelta(days=history_days)).strftime("%Y-%m-%d")
+    start = requested_start.strftime("%Y-%m-%d")
     yf_interval = "1d" if interval in ("1d", "1Day") else interval
     raw = yf.download(symbol, start=start, interval=yf_interval, progress=False, auto_adjust=True)
 

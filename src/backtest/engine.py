@@ -83,7 +83,11 @@ def _per_trade_stats(position: pd.Series, strategy_returns: pd.Series) -> tuple[
     """Gruppiert zusammenhängende Long-Phasen zu einzelnen Trades und
     bestimmt, wie viele davon in Summe profitabel waren."""
     in_position = position > 0
-    trade_id = (in_position & ~in_position.shift(1).fillna(False)).cumsum()
+    # shift(1, fill_value=False) hält den bool-dtype. Ein blankes shift(1)
+    # erzeugt object-dtype (NaN), und dort negiert ~ arithmetisch statt
+    # logisch (~False == -1, truthy) - dann zählt jeder Bar als neuer Trade.
+    previously_in_position = in_position.shift(1, fill_value=False)
+    trade_id = (in_position & ~previously_in_position).cumsum()
     trade_id = trade_id.where(in_position)
 
     if trade_id.dropna().empty:

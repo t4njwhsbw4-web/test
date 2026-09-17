@@ -43,6 +43,25 @@ def test_signals_from_probabilities_threshold():
     assert list(signals) == [1, 0, 0, 1, 0]
 
 
+def test_buy_and_hold_counts_as_single_trade():
+    """Regression: shift(1) auf bool ergibt object-dtype, dort negiert ~
+    arithmetisch statt logisch - dann zählte jeder Bar-in-Position als
+    eigener Trade."""
+    prices = _synthetic_prices()
+    signals = pd.Series(1, index=prices.index)
+    result = run_backtest(prices, signals)
+    assert result.n_trades == 1
+
+
+def test_trade_count_matches_distinct_long_phases():
+    prices = _synthetic_prices(n=20)
+    # drei getrennte Long-Phasen
+    raw = [0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    signals = pd.Series(raw, index=prices.index)
+    result = run_backtest(prices, signals)
+    assert result.n_trades == 3
+
+
 def test_win_rate_between_zero_and_one():
     prices = _synthetic_prices(seed=2)
     signals = pd.Series(np.tile([0, 1], 50)[: len(prices)], index=prices.index)
