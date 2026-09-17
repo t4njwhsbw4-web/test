@@ -1,0 +1,49 @@
+# Zentrale Konfiguration für den Trading-Bot.
+# Alles Sicherheitsrelevante lebt hier, nicht verstreut im Code.
+
+universe:
+  # Startphase: Krypto (24/7, keine PDT-Regel) + Nasdaq-Swing als Zielbild.
+  mode: crypto            # crypto | equities
+  symbols:
+    crypto: ["BTC/USD", "ETH/USD"]
+    equities: ["AAPL", "MSFT", "NVDA", "AMZN", "GOOGL"]
+  bar_interval: "1Day"    # Swing-Frequenz, kein Intraday -> keine PDT-Probleme bei Equities
+
+data:
+  history_days: 730       # ~2 Jahre Historie fürs Training
+  cache_dir: "data_cache"
+
+features:
+  return_horizons: [1, 5, 10]
+  rsi_period: 14
+  sma_windows: [10, 20, 50]
+  volatility_window: 20
+  label_horizon: 5        # Modell prognostiziert Richtung über 5 Bars
+
+model:
+  type: "gradient_boosting"
+  walk_forward_splits: 5
+  min_train_bars: 250
+  artifact_dir: "artifacts/models"
+  promote_min_sharpe_improvement: 0.05   # neues Modell muss messbar besser sein
+
+retrain:
+  schedule: "weekly"      # informativ; Ausführung via Cron/Scheduler außerhalb des Codes
+  validation_window_bars: 60
+
+risk:
+  max_position_pct: 0.10        # max. 10% Kapital pro Position
+  max_daily_loss_pct: 0.03      # Kill-Switch: -3% Tagesverlust -> Handel stoppen
+  max_drawdown_pct: 0.15        # Kill-Switch: -15% Drawdown seit Start -> Handel stoppen
+  stop_loss_pct: 0.05           # 5% Stop-Loss pro Position
+  take_profit_pct: 0.10         # 10% Take-Profit pro Position
+  max_open_positions: 5
+
+execution:
+  broker: "paper"          # paper | alpaca_paper | alpaca_live
+  # ALPACA_API_KEY / ALPACA_SECRET_KEY kommen aus Umgebungsvariablen (.env), nie hier eintragen.
+  # alpaca_live erfordert manuelles Setzen von execution.broker UND einer expliziten
+  # Bestätigung (siehe src/execution/broker.py) - kein versehentlicher Live-Handel.
+
+paper_trading:
+  starting_cash: 10000.0
