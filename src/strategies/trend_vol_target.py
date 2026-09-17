@@ -132,14 +132,14 @@ def _apply_rebalance_band(target: pd.Series, band: float) -> pd.Series:
 
 def generate_signals(
     df: pd.DataFrame,
-    trend_mode: str = "price_ma",
+    trend_mode: str = "donchian",
     fast_ma: int = 50,
     slow_ma: int = 200,
     donchian_entry: int = 55,
     donchian_exit: int = 20,
     vol_mode: str = "target",
     target_vol: float = 0.30,
-    vol_window: int = 30,
+    vol_window: int = 60,
     vol_method: str = "rolling",
     max_weight: float = 1.0,
     rebalance_band: float = 0.10,
