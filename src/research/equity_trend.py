@@ -187,7 +187,7 @@ def eval_window(
 
 def eval_bh(df: pd.DataFrame, start, end, symbol: str) -> dict | None:
     prices = _slice(df["close"], start, end)
-    if len(prices) < 30:
+    if len(prices) < 10:
         return None
     ones = pd.Series(1.0, index=prices.index)
     return eval_window(df, ones, start, end, symbol, {"strategy": "buy_and_hold"}, cost_bps=0.0)
