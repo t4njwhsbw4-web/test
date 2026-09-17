@@ -7,10 +7,49 @@ Unterscheidung ist die zentrale Design-Entscheidung dieses Projekts, siehe
 
 ## Status
 
-Frühe Ausbaustufe: Datenpipeline, Feature-Engineering, Walk-Forward-Training,
-Backtest-Engine, Risk-Manager und Paper-Trading-Loop stehen. **Es wurde noch
-kein Live-Handel mit echtem Geld durchgeführt und die Strategie wurde noch
-nicht über einen längeren Zeitraum validiert.**
+Infrastruktur steht (Datenpipeline, Feature-Engineering, Walk-Forward-Training,
+Backtest-Engine, Risk-Manager, Paper-Trading-Loop). **Es wurde kein Live-Handel
+mit echtem Geld durchgeführt, und es gibt derzeit keine Strategie, die das
+verdienen würde** – siehe Ergebnisse unten.
+
+## Ergebnisse der Strategie-Suche
+
+Getestet wurden ~1700 Parameter-Kombinationen über fünf ökonomisch
+unterschiedlich begründete Thesen, auf Krypto-Tagesbars (BTC/ETH/SOL/DOGE/LTC/ADA),
+Entwicklungszeitraum 2020-09 bis 2025-09, mit einem versiegelten Hold-out-Jahr.
+
+| These | Kombinationen | Ergebnis |
+|---|---|---|
+| Mean-Reversion (z-Score/Bollinger) | 354 | Kein Edge. Keine schlägt Buy-and-Hold. SMA-200-Trendfilter schadet durchgängig |
+| Volatility-Breakout (Donchian/Squeeze) | 612 | Kern der These widerlegt: der Kompressionsfilter verschlechtert monoton |
+| Kalender-/Saisonalitätseffekte | 320 | Rauschen. Familywise-Nulltest: p = 0.68 – bei 320 Tests ist ein besserer Zufallsfund zu erwarten |
+| Cross-Sectional-Momentum (Rotation) | 360 | Dev-Sharpe 1.10 → **Hold-out-Sharpe -1.10**. Overfitting |
+| Trendfolge + Vol-Targeting | ~60 | Kein Return-Edge, aber Drawdown-Schutz überträgt sich out-of-sample |
+
+**Zentrale Erkenntnis:** Alle Ansätze, die *Rendite vorhersagen* wollten, sind
+gescheitert. Das Einzige, was den Hold-out überlebt hat, ist *Risikomanagement*:
+Trendfolge mit Volatilitäts-Targeting senkte den mittleren Drawdown von ~-70 %
+(Buy-and-Hold) auf ~-20 %, bei nur 1–3 Trades pro Symbol und Jahr – ohne dabei
+Gewinne zu erzeugen. Im Hold-out-Jahr (Bärenmarkt) verlor jede Variante Geld;
+die beste Position wäre Cash gewesen, und keine Strategie hat das vorhergesagt.
+
+### Warum der Hold-out der wichtigste Teil des Projekts ist
+
+Cross-Sectional-Momentum bestand in der Entwicklungsphase jede Prüfung, die
+man üblicherweise anlegt: keinen Look-Ahead-Bias (verifiziert durch zusätzliche
+Ausführungsverzögerung), Grid-Median über dem Benchmark, 94 % des Parameterraums
+besser als BTC, und gegen 300 Zufallsrotationen im 99.7. Perzentil. Trotzdem
+brach die Strategie out-of-sample vollständig zusammen.
+
+Hinzu kommt ein **Survivorship Bias**, der bei Rotationsstrategien besonders
+stark wirkt: Die sechs getesteten Coins wurden im Rückblick ausgewählt, im
+Wissen, welche überlebt haben. Ohne SOL – das 2020 niemand in ein Sechs-Coin-
+Universum gelegt hätte – fällt der Dev-Sharpe von 1.10 auf 0.71. Ein
+punkt-in-der-Zeit-korrektes Universum (Top-N nach Marktkapitalisierung zum
+jeweiligen Datum) würde das beheben, ist über yfinance aber nicht verfügbar.
+
+Ohne den versiegelten Hold-out hätte dieses Projekt echtes Geld auf eine
+Strategie gesetzt, die im Folgejahr 46 % verloren hätte.
 
 ## Architektur
 
@@ -86,11 +125,33 @@ python3 -m src.pipeline.run_paper
 python3 -m pytest tests/ -v
 ```
 
+Forschung / Strategie-Suche:
+
+```bash
+# Parameter-Grid über mehrere Assets (ML-Ansatz, dokumentiert als Negativergebnis)
+python3 -m src.research.grid_search
+
+# Einmaliger Hold-out-Test der vorregistrierten Kandidaten
+python3 -m src.research.holdout_test
+```
+
+Die Strategie-Familien liegen in `src/strategies/`, jede mit
+`generate_signals()` (bzw. `generate_weights()` bei Portfolio-Rotation) und
+einem `PARAM_GRID`. `src/research/harness.py` kapselt den versiegelten
+Hold-out: `load_data(symbol, period="dev")` für Entwicklung, `"holdout"` nur
+für die finale, einmalige Bewertung.
+
 Für periodisches Retraining/Trading außerhalb dieses Repos per Cron/Scheduler
 einplanen (kein Dauerprozess im Code selbst) – siehe `config.retrain.schedule`
 als Dokumentation der beabsichtigten Frequenz.
 
 ## Weg zu echtem Geld
+
+**Voraussetzung, die derzeit nicht erfüllt ist:** Es muss eine Strategie
+geben, die out-of-sample über mehrere Marktphasen hält. Nach ~1700 getesteten
+Kombinationen gibt es die nicht. Solange das so bleibt, ist der einzige
+sachlich richtige Schritt, *kein* echtes Geld anzuschließen – die Schritte
+unten beschreiben nur, wie es technisch ginge, nicht dass es angebracht wäre.
 
 1. `execution.broker: alpaca_paper` in `config/config.yaml`, `.env` mit
    Alpaca-Paper-Keys befüllen, mehrere Wochen/Monate laufen lassen.
@@ -112,3 +173,10 @@ als Dokumentation der beabsichtigten Frequenz.
 - Keine Garantie für positive Rendite – die Walk-Forward-Validierung zeigt
   nur, ob ein Ansatz historisch überhaupt ein Signal hatte, keine
   Zukunftsgarantie.
+- **Der Krypto-Hold-out ist verbraucht.** Er wurde einmal bewertet und deckt
+  nur eine Marktphase ab (Bärenmarkt 2025/26). Weitere Kandidaten auf
+  denselben Zeitraum zu testen, macht ihn zu einem zweiten Trainingsdatensatz.
+  Neue Strategien brauchen einen neuen, vorher unberührten Zeitraum – oder
+  längere Historie mit mehreren Regimen (Aktienindizes statt Krypto).
+- **Survivorship Bias im Krypto-Universum** (siehe oben) ist nicht behoben und
+  betrifft jede Strategie, die zwischen Assets auswählt.
