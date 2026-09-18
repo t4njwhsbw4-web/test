@@ -87,7 +87,7 @@ REPORT_OUT_PATH = ARTIFACT_DIR / "historical_exit_simulation_report.txt"
 
 WINDOW_HOURS = 8.0  # max_hold=6h (Sicherheitsnetz) + 2h Puffer, siehe Auftrag
 MAX_SIGNATURES_LISTED = 1500  # Cap der im Fenster GELISTETEN Signaturen (Auftrags-Vorgabe)
-MAX_TX_FETCHED_PER_MINT = 220  # praktisches RPC-Budget: tatsächlich per getTransaction geladene Tx pro Mint (siehe Docstring Punkt 4)
+MAX_TX_FETCHED_PER_MINT = 150  # praktisches RPC-Budget: tatsächlich per getTransaction geladene Tx pro Mint (siehe Docstring Punkt 4)
 PAGES_CAP_MINT = 40  # Sicherheitsnetz fürs rückwärtige before-Paging (40 * 1000 = 40000 gescannte Signaturen max.)
 SIGNATURES_PAGE_LIMIT = 1000
 VERIFIED_15MIN_MAX_MINUTES = 15.0

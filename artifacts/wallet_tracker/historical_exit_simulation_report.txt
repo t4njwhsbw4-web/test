@@ -1,0 +1,75 @@
+==============================================================================
+EXIT-SIMULATION AUF REKONSTRUIERTEN PREISVERLÄUFEN (user_filter-Strategie)
+Generiert: 2026-09-18T08:42:52.331284+00:00
+==============================================================================
+
+KORRIGIERTE FRAGESTELLUNG: nicht 'was ist der Coin heute wert', sondern
+'was wäre in den ersten Stunden nach dem historischen Kauf passiert, wenn
+die tatsächlichen Exit-Regeln (Stop-Loss -45%, Trailing-Stop -30% vom Hoch
+ab +30%, Max-Hold 6h) angewendet worden wären'.
+
+Parameter (aus USER_FILTER_PARAMS): stop_loss=45%, trailing_activation=1.30x, trailing_stop=30%, max_hold=6h.
+Mcap-Floor ($10,000) NICHT simuliert (kein historischer Supply-Feed). Wallet-Sell-Signal NICHT simuliert (keine vollständige historische Sell-Historie aller 722 Wallets). Beides macht diese Simulation tendenziell OPTIMISTISCHER als ein echtes Live-System.
+
+STICHPROBE: 23 historische Käufe insgesamt, 11 davon als <=15min-Kauf verifiziert. 23 verarbeitet (Preisrekonstruktion versucht), 19 mit >=1 rekonstruiertem Preispunkt UND simulierter Rendite (11 davon aus der verifizierten <=15min-Teilmenge).
+
+------------------------------------------------------------------------------
+VERGLEICH: alte Methode (Kaufpreis vs. HEUTIGER Preis) vs. neue Methode
+(simulierter Exit gemäss Strategie-Regeln in den ersten Stunden)
+------------------------------------------------------------------------------
+  Alle mit Preisdaten (n=19):
+    Alte Methode  - Median: -100.0%  Mittelwert: -93.1%
+    Neue Methode  - Median: -12.1%  Mittelwert: -3.1%
+    profitabel (>0%): alt=0/19  neu=6/19
+    'tot' laut alter Methode (kein Dexscreener-Pool mehr): 15/19
+
+  Nur verifizierte <=15min-Käufe (n=11):
+    Alte Methode  - Median: -100.0%  Mittelwert: -97.0%
+    Neue Methode  - Median: -0.8%  Mittelwert: +11.0%
+
+------------------------------------------------------------------------------
+VERTEILUNG DER SIMULIERTEN EXIT-GRÜNDE (alle prozessierten Mints)
+------------------------------------------------------------------------------
+    trailing_stop: 13
+    stop_loss: 6
+    kein_preisdatenpunkt_bis_fensterende: 4
+
+------------------------------------------------------------------------------
+PRO-MINT-DETAIL
+------------------------------------------------------------------------------
+mint         wallet       <=15min  #preis  exit_grund                       sim_%     alt_%
+6Jbtr2pJ1M   BES          ja       44      trailing_stop                   -32.0% -100.0%
+BgSSuzyjps   BES          nein     4       stop_loss                       -92.7% -100.0%
+rxtt7D5JY2   BES          nein     146     trailing_stop                   -17.3% -100.0%
+8rWNVQoFyh   BES          nein     0       kein_preisdatenpunkt_bis_fensterende       n/a -100.0%
+EfLEKDXHar   BES          nein     134     stop_loss                       -50.1% -100.0%
+Ai66LHZG9M   BES          nein     0       kein_preisdatenpunkt_bis_fensterende       n/a -99.5%
+6NveXHAvnN   BES          nein     98      trailing_stop                   +73.4% -100.0%
+EsupfB4p6X   BES          ja       139     trailing_stop                    +8.2% -100.0%
+D8LXv1tDhz   BES          ja       146     trailing_stop                   -12.1% -100.0%
+8oxaBMjTnL   BES          ja       95      trailing_stop                  +167.5% -100.0%
+DLYQBXkRo4   ily          nein     0       kein_preisdatenpunkt_bis_fensterende       n/a -99.4%
+BUkB8GzARk   BES          ja       89      trailing_stop                    -0.1% -100.0%
+9p59KYJMyy   jerome       ja       146     trailing_stop                    -0.8% -100.0%
+F16RVE54Yu   jerome       ja       114     trailing_stop                   +96.5% -66.6%
+FnTGZSH7aA   solcrow-fo   nein     92      stop_loss                       -54.6% -98.5%
+LwKLXWK48d   centeddev    ja       27      stop_loss                       -45.2% -100.0%
+SPCXxcqXj6   centeddev    nein     0       kein_preisdatenpunkt_bis_fensterende       n/a -100.0%
+LekVijLi3R   jerome       nein     127     stop_loss                       -48.5% -9.9%
+GN2Qz244tR   centeddev    ja       136     stop_loss                       -50.4% -100.0%
+4LvHfqXeXr   K4ye         nein     146     trailing_stop                    -7.9% -100.0%
+CvuBcuvEhq   K4ye         nein     71      trailing_stop                   +17.7% -93.3%
+DaQZRBxkb4   bandit       ja       79      trailing_stop                   +24.0% -100.0%
+7UBwou8uEp   bandit       ja       35      trailing_stop                   -35.1% -100.0%
+
+------------------------------------------------------------------------------
+EHRLICHE EINSCHRÄNKUNGEN
+------------------------------------------------------------------------------
+1. Kein Wallet-Sell-Signal-Exit simulierbar - Simulation ist optimistischer als live.
+2. Kein Mcap-Floor-Exit simulierbar (kein historischer Supply-Feed) - ebenfalls optimistisch.
+3. Preis aus einzelnen Trade-Tx ist volatiler als ein OHLC-Chart - einzelne Ausreisser
+   können Trailing-Stop/Peak verfälschen, besonders bei wenigen Preispunkten.
+4. Aus RPC-Budgetgründen max. 150 tatsächlich geladene Tx pro Mint (von bis zu 1500
+   gelisteten Signaturen im Fenster), gleichmässig verteilt - keine Tick-für-Tick-Auflösung.
+5. Kleine Stichprobe (<=23 Mints, meist weniger mit genug Preispunkten).
+
