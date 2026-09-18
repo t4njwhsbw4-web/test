@@ -226,7 +226,17 @@ def apply_rugcheck(result: FilterResult) -> FilterResult:
         else:
             reasons.append(f"RugCheck: {total_holders} Holder OK.")
     else:
-        reasons.append("RugCheck: totalHolders=0/nicht indiziert (bei <20-Minuten-Launches häufig) - unbekannt.")
+        # Unbekannt darf nicht wie "unauffällig" behandelt werden: ein noch
+        # nicht indizierter Token ist bei <20-Minuten-Launches der Normalfall
+        # und genau das Fenster, in dem ein Rug ohne jede Vorwarnung passieren
+        # kann. Analog zur Behandlung von liquidity_usd=None in Stufe 1
+        # (dort -40): fehlendes Sicherheitssignal kostet Punkte, statt
+        # neutral durchzurutschen.
+        score -= 20
+        reasons.append(
+            "RugCheck: totalHolders=0/nicht indiziert (bei <20-Minuten-Launches häufig) - "
+            "unbekannt, als Risikosignal gewertet, nicht als neutral."
+        )
 
     top_holders = report.get("topHolders") or []
     top10_pct = None
@@ -241,7 +251,12 @@ def apply_rugcheck(result: FilterResult) -> FilterResult:
         else:
             reasons.append(f"RugCheck: Top-10-Holder {top10_pct:.0%} OK.")
     else:
-        reasons.append("RugCheck: Top-10-Holder-Konzentration nicht verfügbar/nicht indiziert.")
+        # Selbe Begruendung wie bei totalHolders oben: unbekannt != unauffaellig.
+        score -= 15
+        reasons.append(
+            "RugCheck: Top-10-Holder-Konzentration nicht verfügbar/nicht indiziert - "
+            "als Risikosignal gewertet, nicht als neutral."
+        )
 
     supply = (report.get("token") or {}).get("supply")
     creator_balance = report.get("creatorBalance")

@@ -1,0 +1,14 @@
+{
+  "cash": 896.0,
+  "positions": {
+    "7z67q7ZAzPL3MhrqPMstbsB5mQrhaL873ywK44McaRRv::baseline": {
+      "token_address": "7z67q7ZAzPL3MhrqPMstbsB5mQrhaL873ywK44McaRRv",
+      "strategy": "baseline",
+      "symbol": "TROLLFACE",
+      "qty": 17292062.94310911,
+      "entry_price": 6.014320000000001e-06,
+      "entry_time": "2026-09-18T06:20:38.097212+00:00",
+      "opened_reason": "score=60 PASS: liquidity_usd nicht verfügbar (dexId=pumpfun, vermutlich noch auf pump.fun-Bonding-Curve, noch nicht zu AMM migriert) - Risiko unbekannt. | Liq/MCap-Ratio nicht berechenbar (Liquidität oder MCap fehlt). | Buy/Sell-Ratio 1.34 OK. | RugCheck: mintAuthority revoked/nicht gesetzt. | RugCheck: freezeAuthority revoked/nicht gesetzt. | RugCheck: totalHolders=0/nicht indiziert (bei <20-Minuten-Launches häufig) - unbekannt. | RugCheck: Top-10-Holder-Konzentration nicht verfügbar/nicht indiziert. | RugCheck: Dev-/Creator-Wallet-Anteil 0% OK. | RugCheck score_normalised=1 OK."
+    }
+  }
+}

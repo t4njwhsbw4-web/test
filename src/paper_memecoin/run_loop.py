@@ -163,6 +163,17 @@ def run_once() -> dict:
     n_bought = 0
 
     for c in candidates:
+        candidate_strategies = ["baseline"]
+        if strategy.mcap_hypothesis_entry_eligible(c.market_cap):
+            candidate_strategies.append("mcap_hypothesis")
+        still_open_to_buy = [
+            s for s in candidate_strategies if _position_key(c.token_address, s) not in open_positions
+        ]
+        if not still_open_to_buy:
+            # Für alle anwendbaren Strategien besteht bereits eine offene Position -
+            # kein weiterer Filter-/RugCheck-Aufruf nötig (spart Tagesbudget).
+            continue
+
         result = filter_mod.score_candidate(c)
         if not result.passed:
             log_rows.append({
@@ -194,16 +205,8 @@ def run_once() -> dict:
             })
             continue
 
-        # welche der beiden parallelen Strategien sind für diesen Kandidaten
-        # überhaupt anwendbar UND haben noch keine offene Position?
-        candidate_strategies = ["baseline"]
-        if strategy.mcap_hypothesis_entry_eligible(c.market_cap):
-            candidate_strategies.append("mcap_hypothesis")
-
-        for strategy_name in candidate_strategies:
+        for strategy_name in still_open_to_buy:
             pos_key = _position_key(c.token_address, strategy_name)
-            if pos_key in open_positions:
-                continue  # Idempotenz: keine Doppelposition im selben Token+Strategie
 
             n_open_this_strategy = sum(1 for p in open_positions.values() if p["strategy"] == strategy_name)
             if n_open_this_strategy >= strategy.MAX_OPEN_POSITIONS:
