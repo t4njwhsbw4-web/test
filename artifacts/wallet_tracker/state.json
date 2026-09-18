@@ -1,0 +1,17 @@
+{
+  "wTbGt8TiXnpYbKPDyeVQMBDG6JfyBoKHsCqkQQoykmS": {
+    "last_signature": "4MXEo7KMnZuU11mffNNPBQ6UpXHk8fAdJ3dCKV8mP8EUpy6A6FoSHYXm466zwStqXPpT35tHEpiMpjshFHy8RFkg",
+    "last_polled_at": "2026-09-18T06:31:19.249467+00:00",
+    "label": "test_creator_TROLLFACE_pumpfun_token"
+  },
+  "BzDafpWE6EqfiAyyfaz1zRPyp3AjCndCeZiwxkcMpLvx": {
+    "last_signature": "63hP2zLmUGRSVcQjptnWaAdipJQno84cpntbW2MJZjKPfPSApgpZe6XAX5D9D6Ji4Gw6wd2WsZR9B7CtqEoHUpdL",
+    "last_polled_at": "2026-09-18T06:31:19.249467+00:00",
+    "label": "test_creator_CURE_pumpfun_token"
+  },
+  "9Vxg8Lk5ij32no7LnJodPWZEnXoKqLxXiQKYagknS6Wb": {
+    "last_signature": "2NdSeBgey6p6z6amC8Cb13CdwwHJ7ckZ3CAv8s7HJNLcoBGWJPS87Smzn9ej6JaHt45Zbk2GUKRBruRvmAxBvrCd",
+    "last_polled_at": "2026-09-18T06:31:19.249467+00:00",
+    "label": "test_observed_TROLLFACE_holder"
+  }
+}

@@ -1,0 +1,14 @@
+# BEISPIEL-Datei mit Platzhalter-Adressen (2026-09-18) - NICHT die echte
+# 1000-Wallet-Liste des Nutzers. Format: <adresse>[,<label>], siehe
+# src/wallet_tracker/wallet_list.py Docstring. Sobald die echte Liste da ist,
+# einfach als artifacts/wallet_tracker/watched_wallets.txt ablegen (gleiches
+# Format) - kein Code-Change nötig.
+#
+# Diese drei Adressen wurden NICHT von Axiom/als "beste Trader" ausgewählt,
+# sondern nur zu Testzwecken über bereits im Repo vorhandene RugCheck-Reports
+# (creator-Feld) bzw. eine on-chain beobachtete Token-Halter-Adresse
+# ermittelt - sie dienen ausschliesslich dazu, die Fetcher-Pipeline gegen
+# echte, aktive Solana-Adressen zu testen, bevor die reale Liste da ist.
+wTbGt8TiXnpYbKPDyeVQMBDG6JfyBoKHsCqkQQoykmS,test_creator_TROLLFACE_pumpfun_token
+BzDafpWE6EqfiAyyfaz1zRPyp3AjCndCeZiwxkcMpLvx,test_creator_CURE_pumpfun_token
+9Vxg8Lk5ij32no7LnJodPWZEnXoKqLxXiQKYagknS6Wb,test_observed_TROLLFACE_holder

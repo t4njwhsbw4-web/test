@@ -1,0 +1,114 @@
+==============================================================================
+KORRIGIERTE ALTERS-ANALYSE - ECHTES MINT-ERSTELLUNGSDATUM UEBER SOLANA-RPC
+Erzeugt: 2026-09-18T07:24:23.469104+00:00
+==============================================================================
+
+KORRIGIERTE METHODIK GEGENUEBER DER VORGAENGER-ANALYSE:
+Die vorherige Alters-Klassifikation nutzte Dexscreener `pairCreatedAt`. Das
+ist (a) oft NULL fuer tote/delistete Coins - eine zirkulaere Verzerrung,
+denn 'kein Pool mehr' bedeutet 'keine Alters-Info mehr', unabhaengig vom
+echten Alter beim Kauf - und (b) selbst wenn vorhanden, das Datum der AMM-
+Migration, nicht der eigentlichen Mint-Erstellung auf der pump.fun-Bonding-
+Curve. Diese Analyse ersetzt das durch die AELTESTE bekannte On-Chain-
+Signatur der Mint-Adresse selbst (Solana Public RPC, getSignaturesForAddress,
+rueckwaerts paginiert bis zum nachweislichen Ende der Historie). Konnte das
+Ende der Historie innerhalb des Paging-Budgets NICHT erreicht werden, gilt
+das Erstellungsdatum als NICHT SICHER ERMITTELBAR - es wird KEINE Schaetzung
+aus der aeltesten GEFUNDENEN (aber moeglicherweise nicht aeltesten echten)
+Signatur geraten, um nicht denselben Bias-Fehler an anderer Stelle zu
+wiederholen.
+
+Basis: die bereits vorhandenen 23 Kauf-Eintraege aus
+historical_entries.json (keine neue Wallet-Abfrage). Die dort bereits
+ermittelte AKTUELLE Bewertung (multiple_since_buy, dead_or_delisted) bleibt
+unveraendert - nur die Alters-KLASSIFIKATION des Kaufs wird neu bestimmt.
+
+------------------------------------------------------------------------------
+ERGEBNIS PRO ALTERS-GRUPPE
+------------------------------------------------------------------------------
+
+<= 15 Min. nach Mint-Erstellung ("echt frisch"): n=11
+  tot/delisted: 10/11 (90.9%)
+  Median-Rendite seit Kauf: -100.0%
+  Anteil >= 1.5x seit Kauf: 0/11 (0.0%)
+  Anteil >= 2x seit Kauf:   0/11 (0.0%)
+    - mint=6Jbtr2pJ1Mzw... kauf=2026-07-21T03:31:50+00:00 alter_bei_kauf=0.0min multiple=0.000 tot=True
+    - mint=EsupfB4p6XAn... kauf=2026-08-06T02:17:22+00:00 alter_bei_kauf=0.1min multiple=0.000 tot=True
+    - mint=D8LXv1tDhzDy... kauf=2026-08-08T05:02:56+00:00 alter_bei_kauf=0.5min multiple=0.000 tot=True
+    - mint=8oxaBMjTnLAL... kauf=2026-08-12T03:40:48+00:00 alter_bei_kauf=0.0min multiple=0.000 tot=True
+    - mint=BUkB8GzARkYa... kauf=2026-08-21T05:31:28+00:00 alter_bei_kauf=0.1min multiple=0.000 tot=True
+    - mint=9p59KYJMyyxv... kauf=2026-08-25T22:42:34+00:00 alter_bei_kauf=1.6min multiple=0.000 tot=True
+    - mint=F16RVE54Yu3x... kauf=2026-09-02T14:38:57+00:00 alter_bei_kauf=8.8min multiple=0.334 tot=False
+    - mint=LwKLXWK48dxd... kauf=2026-09-09T19:47:13+00:00 alter_bei_kauf=0.4min multiple=0.000 tot=True
+    - mint=GN2Qz244tRLU... kauf=2026-09-15T20:18:26+00:00 alter_bei_kauf=0.3min multiple=0.000 tot=True
+    - mint=DaQZRBxkb4nu... kauf=2026-09-18T01:31:10+00:00 alter_bei_kauf=0.1min multiple=0.000 tot=True
+    - mint=7UBwou8uEpL7... kauf=2026-09-18T01:44:02+00:00 alter_bei_kauf=0.0min multiple=0.000 tot=True
+
+15 Min. - 1 Std. nach Mint-Erstellung: n=0
+  (keine Eintraege in dieser Gruppe)
+
+> 1 Std. nach Mint-Erstellung: n=2
+  tot/delisted: 2/2 (100.0%)
+  Median-Rendite seit Kauf: -100.0%
+  Anteil >= 1.5x seit Kauf: 0/2 (0.0%)
+  Anteil >= 2x seit Kauf:   0/2 (0.0%)
+    - mint=EfLEKDXHarKd... kauf=2026-08-02T22:49:21+00:00 alter_bei_kauf=14502.9min multiple=0.000 tot=True
+    - mint=4LvHfqXeXrjW... kauf=2026-09-16T01:19:04+00:00 alter_bei_kauf=124.2min multiple=0.000 tot=True
+
+Erstellungsdatum nicht ermittelbar: n=10
+  tot/delisted: 5/10 (50.0%)
+  Median-Rendite seit Kauf: -99.7%
+  Anteil >= 1.5x seit Kauf: 0/10 (0.0%)
+  Anteil >= 2x seit Kauf:   0/10 (0.0%)
+    - mint=BgSSuzyjpscP... kauf=2026-07-28T16:55:45+00:00 alter_bei_kauf=n/a multiple=0.000 tot=True
+    - mint=rxtt7D5JY2oc... kauf=2026-07-31T01:47:55+00:00 alter_bei_kauf=n/a multiple=0.000 tot=True
+    - mint=8rWNVQoFyhWg... kauf=2026-08-02T19:18:08+00:00 alter_bei_kauf=n/a multiple=0.000 tot=True
+    - mint=Ai66LHZG9MCz... kauf=2026-08-04T03:20:56+00:00 alter_bei_kauf=n/a multiple=0.005 tot=False
+    - mint=6NveXHAvnNFH... kauf=2026-08-05T20:55:50+00:00 alter_bei_kauf=n/a multiple=0.000 tot=True
+    - mint=DLYQBXkRo43C... kauf=2026-08-18T13:27:43+00:00 alter_bei_kauf=n/a multiple=0.006 tot=False
+    - mint=FnTGZSH7aASV... kauf=2026-09-07T18:23:49+00:00 alter_bei_kauf=n/a multiple=0.015 tot=False
+    - mint=SPCXxcqXj6e5... kauf=2026-09-14T02:05:32+00:00 alter_bei_kauf=n/a multiple=0.000 tot=True
+    - mint=LekVijLi3RFG... kauf=2026-09-14T19:35:32+00:00 alter_bei_kauf=n/a multiple=0.901 tot=False
+    - mint=CvuBcuvEhqZb... kauf=2026-09-16T19:43:40+00:00 alter_bei_kauf=n/a multiple=0.067 tot=False
+
+------------------------------------------------------------------------------
+TEIL 3 - IST DIE '<=15MIN'-GRUPPE GROSS GENUG FUER EINE AUSSAGE?
+------------------------------------------------------------------------------
+n=11 >= Minimum (5) - eine vorsichtige Aussage
+ist grundsaetzlich moeglich, siehe Kennzahlen oben.
+
+==============================================================================
+EHRLICHE EINORDNUNG - ANTWORT AUF DIE NUTZERFRAGE
+==============================================================================
+Frage: 'Sind wirklich frisch gekaufte, gut gefilterte Coins auch tot?'
+
+Diese Analyse kann NUR den ersten Teil der Frage beantworten (frisch
+gekauft), und selbst das nur mit der oben dokumentierten kleinen
+Stichprobe. Der zweite Teil ('gut gefiltert') ist STRUKTURELL NICHT
+rueckwirkend pruefbar: der Rug-Filter (RugCheck: Mint-/Freeze-Authority,
+Holder-Konzentration, Liquiditaet, siehe src/paper_memecoin/filter.py)
+wurde NICHT rueckwirkend auf diese historischen Kaeufe angewendet, weil
+RugCheck nur den AKTUELLEN Zustand eines Tokens liefert, nicht dessen
+historischen Zustand zum Kaufzeitpunkt vor Tagen oder Wochen. Es ist nicht
+moeglich, nachtraeglich zu wissen, ob ein Token vor 40 Tagen zum
+Kaufzeitpunkt unseren Filter bestanden haette (Mint-/Freeze-Authority koennen
+seither widerrufen worden sein, Holder-Konzentration und Liquiditaet aendern
+sich staendig). Das ist eine strukturelle Grenze jeder retrospektiven Analyse
+ohne historischen Snapshot-Datenspeicher, kein Fehler dieses Skripts.
+
+Diese Analyse beantwortet also weiterhin nur die engere Frage: 'Kauften
+diese Wallets nachweislich frische Coins (jetzt ueber die Blockchain
+verifiziert, nicht ueber Dexscreener-Proxy), und was wurde in der Folge
+daraus?' - NICHT 'was waere passiert, wenn zusaetzlich unser Rug-Filter zum
+Kaufzeitpunkt bestanden haette'. Fuer die zweite Frage braeuchte es einen
+FORWARD-Test (RugCheck/Filter live auf neue Kaeufe anwenden und danach
+beobachten), keinen retrospektiven.
+
+Zur reinen 'frisch gekauft'-Frage: von 11 nachweislich innerhalb von
+15 Minuten nach echter Mint-Erstellung gekauften Coins sind 10
+(90.9%) heute tot/delisted.
+
+Zusaetzlicher Hinweis: bei 10/23 Eintraegen liess sich das
+echte Erstellungsdatum innerhalb des Paging-Budgets (PAGES_CAP=10 Seiten) nicht sicher bestimmen (Mint-Adresse hat mehr als
+10000 Signaturen, oder RPC-Fehler) - fuer diese
+wird bewusst keine Alters-Schaetzung geraten, siehe Methodik oben.
