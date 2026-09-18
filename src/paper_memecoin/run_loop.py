@@ -8,15 +8,29 @@ Ablauf pro Aufruf:
        (strategy.py), bei Trigger verkaufen und loggen.
     3. Neue Kandidaten scannen (scanner.py), Stufe-1-Filter (filter.score_candidate),
        für Survivors Stufe-2-Filter (filter.apply_rugcheck, Tagesbudget-begrenzt).
-    4. Kandidaten, die den Filter bestehen: ZWEI PARALLELE, UNABHÄNGIGE Paper-
+    4. Kandidaten, die den Filter bestehen: DREI PARALLELE, UNABHÄNGIGE Paper-
        Positionen möglich (siehe strategy.py):
          a) "baseline"        - generische %-TP/SL/Zeit-Regel, immer möglich.
          b) "mcap_hypothesis" - Nutzer-Hypothese "~20k Mcap Einstieg, 4x-Ziel
                                  (~80k Mcap)", NUR wenn der aktuelle Marketcap
                                  im Fenster strategy.MCAP_HYPOTHESIS_PARAMS
                                  liegt.
-       Beide werden getrennt im State (Key "{token}::{strategy}") und in der
-       CSV (Spalte "strategy") geführt, damit sie unabhängig ausgewertet
+         c) "wallet_signal"   - Nutzer-Hypothese "Rug-Filter + Kauf durch
+                                 >= 1 Tracked-Wallet (aus src/wallet_tracker/)
+                                 innerhalb 30min verbessert die bedingte
+                                 Erfolgswahrscheinlichkeit gegenüber der
+                                 unbedingten ~99%-Rug-Rate" (TESTBAR, NICHT
+                                 bewiesen - siehe strategy.py und
+                                 wallet_signal.py). NUR wenn
+                                 wallet_signal.check_wallet_signal() für den
+                                 Kandidaten-Mint matched=True liefert. Liest
+                                 ausschliesslich artifacts/wallet_tracker/*.csv
+                                 (read-only, kein Schreibzugriff auf
+                                 wallet_tracker) - fehlen/leeren diese Dateien
+                                 noch (Cron läuft erst kurz), ist "kein
+                                 Signal" ein korrektes Ergebnis, kein Fehler.
+       Alle drei werden getrennt im State (Key "{token}::{strategy}") und in
+       der CSV (Spalte "strategy") geführt, damit sie unabhängig ausgewertet
        werden können. Kandidaten, die den Filter NICHT bestehen -> SKIP mit
        Begründung geloggt (kein Kauf ist ein valides Ergebnis, kein Fehler).
     5. State zurückschreiben.
@@ -45,7 +59,7 @@ STATE_PATH = ARTIFACT_DIR / "state.json"
 TRADES_CSV_PATH = ARTIFACT_DIR / "trades.csv"
 
 STARTING_CASH = 1000.0
-STRATEGIES = ("baseline", "mcap_hypothesis")
+STRATEGIES = ("baseline", "mcap_hypothesis", "wallet_signal")
 CSV_FIELDS = ["timestamp", "token_address", "symbol", "strategy", "action", "price", "qty", "reason", "equity_after"]
 
 
@@ -142,6 +156,10 @@ def run_once() -> dict:
                 entry_price=pos["entry_price"], current_price=current_price,
                 entry_time=entry_time, now=now,
             )
+        elif strategy_name == "wallet_signal":
+            exit_flag, exit_reason = strategy.should_exit_wallet_signal(
+                pos["entry_price"], current_price, entry_time, now,
+            )
         else:
             exit_flag, exit_reason = strategy.should_exit(pos["entry_price"], current_price, entry_time, now)
 
@@ -162,10 +180,22 @@ def run_once() -> dict:
     n_passed_stage2 = 0
     n_bought = 0
 
+    n_wallet_signal_matched = 0
+
     for c in candidates:
         candidate_strategies = ["baseline"]
         if strategy.mcap_hypothesis_entry_eligible(c.market_cap):
             candidate_strategies.append("mcap_hypothesis")
+
+        # Wallet-Signal-Hypothese: immer geprüft (read-only, robust gegen
+        # fehlende/leere wallet_tracker-CSVs), Ergebnis wird unabhängig vom
+        # Ausgang geloggt, damit "kein Signal" sichtbar/nachvollziehbar ist
+        # statt stillschweigend übersprungen zu werden.
+        wallet_signal_result = strategy.wallet_signal_entry_eligible(c.token_address)
+        if wallet_signal_result.matched:
+            candidate_strategies.append("wallet_signal")
+            n_wallet_signal_matched += 1
+
         still_open_to_buy = [
             s for s in candidate_strategies if _position_key(c.token_address, s) not in open_positions
         ]
@@ -232,6 +262,12 @@ def run_once() -> dict:
             qty = size_usd / c.price_usd
             order = broker.submit_order(pos_key, qty=qty, side="buy", price=c.price_usd)
             reason_text = f"score={result.score:.0f} PASS: " + " | ".join(result.reasons)
+            if strategy_name == "wallet_signal":
+                reason_text += (
+                    f" | Wallet-Signal: {wallet_signal_result.wallet_count} Tracked-Wallet(s) "
+                    f"({', '.join(l for l in wallet_signal_result.wallet_labels if l) or 'ohne Label'}) "
+                    f"kauften innerhalb {wallet_signal_result.window_minutes:.0f}min."
+                )
             new_pos = {
                 "token_address": c.token_address,
                 "strategy": strategy_name,
@@ -262,6 +298,7 @@ def run_once() -> dict:
         "candidates_scanned": n_scanned,
         "candidates_passed_stage1_dexscreener": n_passed_stage1,
         "candidates_passed_stage2_rugcheck": n_passed_stage2,
+        "candidates_with_wallet_signal_match": n_wallet_signal_matched,
         "trades_opened": n_bought,
         "open_positions": len(open_positions),
         "open_positions_by_strategy": {
