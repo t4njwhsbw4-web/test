@@ -99,7 +99,7 @@ def main() -> None:
           ", ".join(usdt[usdt["status"] != "TRADING"]["symbol"].head(15)))
 
     # Leveraged Tokens (UP/DOWN/BULL/BEAR) sind ein Sonderfall - separat zeigen
-    lev = usdt["symbol"].str.contains("UP$|DOWN$|BULL$|BEAR$", regex=True)
+    lev = usdt["base"].str.contains("UP$|DOWN$|BULL$|BEAR$", regex=True)
     print(f"  davon Leveraged Tokens:  {int((lev & (usdt['status'] != 'TRADING')).sum())}")
     core = usdt[~lev]
     core_nt = int((core["status"] != "TRADING").sum())

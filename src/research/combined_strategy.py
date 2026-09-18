@@ -415,6 +415,7 @@ def cash_adjusted(streams: dict, table_exposure: dict, rf_daily: pd.Series) -> d
 
 
 def main() -> None:
+    global FIRST_OOS_YEAR
     pd.set_option("display.width", 220)
     pd.set_option("display.max_columns", 40)
 
@@ -598,6 +599,77 @@ def main() -> None:
         print(d22.to_string())
     except Exception as exc:  # pragma: no cover - Datenquelle optional
         print(f"  ^IRX nicht verfuegbar, Sensitivitaet uebersprungen: {exc}")
+
+    # --- Ist der Vorteil konsistent oder eine einzelne Krise? --------------
+    print("\n" + "=" * 100)
+    print("KONSISTENZ: Siege je OOS-Block und Aggregat OHNE die Finanzkrise")
+    print("=" * 100)
+    sh = table.pivot_table(index="block", columns="strategy", values="sharpe", sort=False)
+    ca = table.pivot_table(index="block", columns="strategy", values="calmar", sort=False)
+    n = len(sh)
+    for a in ("combo_cash", "combo_redistr", "trend_only_cash"):
+        for b in ("alloc_vt", "single_trend", "B&H SPY"):
+            print(
+                f"  {SHORT[a]:16s} vs {SHORT[b]:14s}: "
+                f"Sharpe-Siege {int((sh[a] > sh[b]).sum())}/{n}, "
+                f"Calmar-Siege {int((ca[a] > ca[b]).sum())}/{n}"
+            )
+    rows = {}
+    for name, r in streams.items():
+        m = performance_metrics(r[r.index.year >= 2010])
+        rows[SHORT.get(name, name)] = {
+            "sharpe": round(m["sharpe"], 2),
+            "cagr%": round(m["cagr"] * 100, 2),
+            "mdd%": round(m["max_drawdown"] * 100, 1),
+            "calmar": round(m["calmar"], 2),
+        }
+    df = pd.DataFrame(rows).T
+    df = df.reindex([SHORT.get(c, c) for c in ORDER if SHORT.get(c, c) in df.index])
+    print("\n--- Aggregat ohne 2008/2009 (ab 2010) ---")
+    print(df.to_string())
+
+    # --- Andere Universen: haelt das Ergebnis, wenn man das Universum dreht? -
+    print("\n" + "=" * 100)
+    print("UNIVERSUMS-ROBUSTHEIT (gleiches Walk-Forward-Schema, anderes Universum)")
+    print("=" * 100)
+    for alt_universe, first_oos in (
+        (["SPY", "TLT", "IEF", "GLD"], 2008),   # ohne QQQ
+        (["SPY", "TLT", "IEF"], 2005),          # ab 2002 -> 3 Jahre mehr OOS
+    ):
+        alt_closes = load_closes(alt_universe, HISTORY_DAYS, cache_dir=CACHE_DIR)
+        alt_ohlc = load_ohlc(alt_universe)
+        alt_fams = build_candidates(alt_closes, alt_ohlc, alt_universe)
+        alt_never = rebalance_flags(alt_closes.index, "never")
+        alt_static = {"B&H SPY": (weights_buy_and_hold(alt_closes, "SPY"), alt_never)}
+        saved, FIRST_OOS_YEAR = FIRST_OOS_YEAR, first_oos
+        alt_table, alt_streams, _ = walk_forward(
+            alt_closes, alt_fams, alt_static, selection_metric="calmar"
+        )
+        FIRST_OOS_YEAR = saved
+        print(
+            f"\n--- {'/'.join(alt_universe)} | {alt_closes.index.min().date()}"
+            f" .. {alt_closes.index.max().date()} | OOS ab {first_oos} ---"
+        )
+        print("OOS-Sharpe je Block:")
+        print(pivot_block_table(alt_table, "sharpe").round(2).to_string())
+        print("OOS-Calmar je Block:")
+        print(pivot_block_table(alt_table, "calmar").round(2).to_string())
+        rows = {}
+        for name, r in alt_streams.items():
+            m = performance_metrics(r)
+            m2 = performance_metrics(r[r.index.year >= 2010])
+            rows[SHORT.get(name, name)] = {
+                "sharpe": round(m["sharpe"], 2),
+                "cagr%": round(m["cagr"] * 100, 2),
+                "mdd%": round(m["max_drawdown"] * 100, 1),
+                "calmar": round(m["calmar"], 2),
+                "sharpe_ab2010": round(m2["sharpe"], 2),
+                "calmar_ab2010": round(m2["calmar"], 2),
+            }
+        df = pd.DataFrame(rows).T
+        df = df.reindex([SHORT.get(c, c) for c in ORDER if SHORT.get(c, c) in df.index])
+        print("Aggregat:")
+        print(df.to_string())
 
 
 if __name__ == "__main__":
