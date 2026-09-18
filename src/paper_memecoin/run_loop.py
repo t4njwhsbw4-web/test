@@ -8,7 +8,7 @@ Ablauf pro Aufruf:
        (strategy.py), bei Trigger verkaufen und loggen.
     3. Neue Kandidaten scannen (scanner.py), Stufe-1-Filter (filter.score_candidate),
        für Survivors Stufe-2-Filter (filter.apply_rugcheck, Tagesbudget-begrenzt).
-    4. Kandidaten, die den Filter bestehen: DREI PARALLELE, UNABHÄNGIGE Paper-
+    4. Kandidaten, die den Filter bestehen: VIER PARALLELE, UNABHÄNGIGE Paper-
        Positionen möglich (siehe strategy.py):
          a) "baseline"        - generische %-TP/SL/Zeit-Regel, immer möglich.
          b) "mcap_hypothesis" - Nutzer-Hypothese "~20k Mcap Einstieg, 4x-Ziel
@@ -29,10 +29,22 @@ Ablauf pro Aufruf:
                                  wallet_tracker) - fehlen/leeren diese Dateien
                                  noch (Cron läuft erst kurz), ist "kein
                                  Signal" ein korrektes Ergebnis, kein Fehler.
-       Alle drei werden getrennt im State (Key "{token}::{strategy}") und in
+         d) "user_filter"     - Nachbau des TATSÄCHLICHEN manuellen Axiom-
+                                 Filter-Setups eines erfahrenen Traders
+                                 (Volume/Mcap-Min/Alter/Top-10-Holder als
+                                 harte Zahlen-Gates + zunehmender Trend bei
+                                 kaufenden Tracked-Wallets). BEWUSST NICHT
+                                 hinter (a)/(b)/(c)'s gemeinsamem
+                                 filter.score_candidate()/apply_rugcheck()
+                                 gehängt, sondern eigenständig geprüft (siehe
+                                 strategy.user_filter_entry_eligible() /
+                                 user_filter_strategy.py) - der nachgebildete
+                                 Trader nutzt seinen eigenen Filter, keinen
+                                 zweiten Rug-Score obendrauf.
+       Alle vier werden getrennt im State (Key "{token}::{strategy}") und in
        der CSV (Spalte "strategy") geführt, damit sie unabhängig ausgewertet
-       werden können. Kandidaten, die den Filter NICHT bestehen -> SKIP mit
-       Begründung geloggt (kein Kauf ist ein valides Ergebnis, kein Fehler).
+       werden können. Kandidaten, die den jeweiligen Filter NICHT bestehen ->
+       SKIP mit Begründung geloggt (kein Kauf ist ein valides Ergebnis, kein Fehler).
     5. State zurückschreiben.
 
 Idempotenz: Ein erneuter Aufruf kurz nach dem letzten führt NICHT zu
@@ -59,7 +71,7 @@ STATE_PATH = ARTIFACT_DIR / "state.json"
 TRADES_CSV_PATH = ARTIFACT_DIR / "trades.csv"
 
 STARTING_CASH = 1000.0
-STRATEGIES = ("baseline", "mcap_hypothesis", "wallet_signal")
+STRATEGIES = ("baseline", "mcap_hypothesis", "wallet_signal", "user_filter")
 CSV_FIELDS = ["timestamp", "token_address", "symbol", "strategy", "action", "price", "qty", "reason", "equity_after"]
 
 
@@ -160,6 +172,12 @@ def run_once() -> dict:
             exit_flag, exit_reason = strategy.should_exit_wallet_signal(
                 pos["entry_price"], current_price, entry_time, now,
             )
+        elif strategy_name == "user_filter":
+            exit_flag, exit_reason = strategy.should_exit_user_filter(
+                entry_price=pos["entry_price"], current_price=current_price,
+                entry_mcap=pos.get("entry_mcap"), current_mcap=current_mcap,
+                entry_time=entry_time, now=now,
+            )
         else:
             exit_flag, exit_reason = strategy.should_exit(pos["entry_price"], current_price, entry_time, now)
 
@@ -181,8 +199,80 @@ def run_once() -> dict:
     n_bought = 0
 
     n_wallet_signal_matched = 0
+    n_user_filter_checked = 0
+    n_user_filter_matched = 0
 
     for c in candidates:
+        # --- "user_filter": komplett EIGENSTÄNDIGE Prüfung, bewusst NICHT
+        # hinter filter.score_candidate()/apply_rugcheck() gehängt (siehe
+        # user_filter_strategy.py-Docstring) - der Trader, den diese Strategie
+        # nachbildet, wendet seinen eigenen Axiom-Filter an, keinen zweiten,
+        # unabhängigen Rug-Score-Filter obendrauf. Top-10-Holder wird darin
+        # über einen eigenen RugCheck-Aufruf geprüft (eigenes Tagesbudget-
+        # Delta ggü. den anderen drei Strategien, siehe rugcheck_client.py).
+        user_filter_pos_key = _position_key(c.token_address, "user_filter")
+        if user_filter_pos_key not in open_positions:
+            n_open_user_filter = sum(1 for p in open_positions.values() if p["strategy"] == "user_filter")
+            if n_open_user_filter >= strategy.MAX_OPEN_POSITIONS:
+                log_rows.append({
+                    "timestamp": now.isoformat(), "token_address": c.token_address,
+                    "symbol": c.symbol, "strategy": "user_filter", "action": "SKIP",
+                    "price": c.price_usd, "qty": None,
+                    "reason": "MAX_OPEN_POSITIONS (user_filter) erreicht.",
+                    "equity_after": None,
+                })
+            else:
+                uf_result = strategy.user_filter_entry_eligible(c)
+                n_user_filter_checked += 1
+                if not uf_result.eligible:
+                    log_rows.append({
+                        "timestamp": now.isoformat(), "token_address": c.token_address,
+                        "symbol": c.symbol, "strategy": "user_filter", "action": "SKIP",
+                        "price": c.price_usd, "qty": None,
+                        "reason": "user_filter FAIL: " + " | ".join(uf_result.reasons),
+                        "equity_after": None,
+                    })
+                elif c.price_usd is None or c.price_usd <= 0:
+                    log_rows.append({
+                        "timestamp": now.isoformat(), "token_address": c.token_address,
+                        "symbol": c.symbol, "strategy": "user_filter", "action": "SKIP",
+                        "price": None, "qty": None,
+                        "reason": "user_filter PASS, aber kein gültiger Preis.",
+                        "equity_after": None,
+                    })
+                else:
+                    n_user_filter_matched += 1
+                    size_usd = strategy.position_size_usd(broker._cash)
+                    if size_usd <= 0 or size_usd > broker._cash:
+                        log_rows.append({
+                            "timestamp": now.isoformat(), "token_address": c.token_address,
+                            "symbol": c.symbol, "strategy": "user_filter", "action": "SKIP",
+                            "price": c.price_usd, "qty": None,
+                            "reason": "user_filter PASS, aber nicht genug Cash für Positionsgrösse.",
+                            "equity_after": None,
+                        })
+                    else:
+                        qty = size_usd / c.price_usd
+                        order = broker.submit_order(user_filter_pos_key, qty=qty, side="buy", price=c.price_usd)
+                        reason_text = "user_filter PASS: " + " | ".join(uf_result.reasons)
+                        open_positions[user_filter_pos_key] = {
+                            "token_address": c.token_address,
+                            "strategy": "user_filter",
+                            "symbol": c.symbol,
+                            "qty": order.qty,
+                            "entry_price": order.filled_price,
+                            "entry_mcap": c.market_cap,
+                            "entry_time": now.isoformat(),
+                            "opened_reason": reason_text,
+                        }
+                        n_bought += 1
+                        log_rows.append({
+                            "timestamp": now.isoformat(), "token_address": c.token_address,
+                            "symbol": c.symbol, "strategy": "user_filter", "action": "BUY",
+                            "price": order.filled_price, "qty": order.qty, "reason": reason_text,
+                            "equity_after": broker.get_equity(),
+                        })
+
         candidate_strategies = ["baseline"]
         if strategy.mcap_hypothesis_entry_eligible(c.market_cap):
             candidate_strategies.append("mcap_hypothesis")
@@ -299,6 +389,8 @@ def run_once() -> dict:
         "candidates_passed_stage1_dexscreener": n_passed_stage1,
         "candidates_passed_stage2_rugcheck": n_passed_stage2,
         "candidates_with_wallet_signal_match": n_wallet_signal_matched,
+        "candidates_checked_user_filter": n_user_filter_checked,
+        "candidates_passed_user_filter": n_user_filter_matched,
         "trades_opened": n_bought,
         "open_positions": len(open_positions),
         "open_positions_by_strategy": {

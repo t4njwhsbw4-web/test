@@ -20,7 +20,7 @@ from __future__ import annotations
 
 import datetime as dt
 
-from . import wallet_signal
+from . import user_filter_strategy, wallet_signal
 
 TAKE_PROFIT_PCT = 0.50  # +50%
 STOP_LOSS_PCT = 0.30  # -30%
@@ -121,6 +121,31 @@ def should_exit_wallet_signal(entry_price: float, current_price: float, entry_ti
     if held_hours >= params["max_hold_hours"]:
         return True, f"wallet_signal_max_hold_time ({held_hours:.1f}h)"
     return False, None
+
+
+# --------------------------------------------------------------------------
+# VIERTE, SEPARATE Strategie-Variante: "user_filter" - Nachbau des tatsächlichen
+# manuellen Axiom-Filter-Setups eines erfahrenen Traders (Screenshots +
+# O-Ton-Beschreibung). Volle Parameter, Filter- und Wallet-Trend-Logik liegen
+# in user_filter_strategy.py (siehe dort für den Datenverfügbarkeits-Check zu
+# Bundle-%/Snipers-%/B.curve-%/Insiders-%). Hier nur die dünnen Wrapper, damit
+# run_loop.py einheitlich strategy.<name>_entry_eligible()/should_exit_<name>()
+# für alle vier Strategien aufrufen kann.
+def user_filter_entry_eligible(c) -> user_filter_strategy.UserFilterEntryResult:
+    """Prüft für einen Kandidaten die volle user_filter-Einstiegslogik
+    (Zahlen-Gates + Top-10-Holder via RugCheck + zunehmender Wallet-Trend).
+    Liefert immer ein UserFilterEntryResult (nie None/Exception)."""
+    return user_filter_strategy.check_user_filter_entry(c)
+
+
+def should_exit_user_filter(entry_price: float, current_price: float,
+                             entry_mcap: float | None, current_mcap: float | None,
+                             entry_time: dt.datetime, now: dt.datetime) -> tuple[bool, str] | tuple[bool, None]:
+    """Exit-Regeln der user_filter-Strategie: siehe user_filter_strategy.should_exit_user_filter()
+    (Stop-Loss-Band -45% Default ODER Mcap < $10k, was zuerst eintritt)."""
+    return user_filter_strategy.should_exit_user_filter(
+        entry_price, current_price, entry_mcap, current_mcap, entry_time, now,
+    )
 
 
 def position_size_usd(cash: float) -> float:
