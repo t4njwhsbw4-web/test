@@ -83,7 +83,8 @@ RUGCHECK_MAX_SCORE_NORMALISED = 50
 MIN_LIQUIDITY_USD = 5_000.0
 ROBUST_LIQUIDITY_USD = 50_000.0
 MIN_LIQ_TO_MCAP = 0.04
-MIN_MARKET_CAP = 2_000.0
+MIN_MARKET_CAP = 6_000.0  # auf Nutzerwunsch angehoben von 2.000 - unter ~6k
+# ist eine Marktkapitalisierung fuer ernsthafte Bewertung ohnehin zu duenn
 MAX_MARKET_CAP = 500_000.0  # deutlich höher -> vermutlich schon durchgelaufen
 MIN_AGE_SECONDS = 60.0  # unter 1 Minute: noch keine verwertbaren Handelsdaten
 MIN_BUY_SELL_RATIO = 0.8  # mehr Verkäufer als Käufer im h1-Fenster -> Warnsignal
