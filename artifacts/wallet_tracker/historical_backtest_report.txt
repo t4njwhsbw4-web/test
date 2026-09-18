@@ -1,0 +1,121 @@
+==============================================================================
+HISTORISCHER WALLET-BACKTEST - Axiom 'beste Trader'-Liste
+Erzeugt: 2026-09-18T07:15:32.321602+00:00
+==============================================================================
+
+EINSCHRAENKUNG (bitte NICHT ueberlesen):
+Dies ist KEIN sauberer Hold-out-Test. Die 'aktuelle' Bewertung jedes
+Tokens nutzt Informationen (heutiger Dexscreener-Stand), die zum
+Kaufzeitpunkt nicht verfuegbar waren -> klassisches Survivorship-/
+Look-ahead-Problem bei retrospektiver Analyse. Es wird NICHT simuliert,
+wann/ob ein reales Live-System hatte aussteigen koennen (kein optimales
+Timing gesucht, kein Peak-Preis waehrend der Haltezeit) - nur
+Kaufpreis vs. HEUTE. Die Frage, die dieser Bericht beantwortet, ist eng:
+'Wie oft lag diese Wallet-Gruppe historisch richtig?', NICHT 'was haette
+Live-Trading mit dieser Strategie abgeworfen'.
+
+------------------------------------------------------------------------------
+STICHPROBE
+------------------------------------------------------------------------------
+Wallets in Stichprobe (erste N aus watched_wallets.txt, Auswahl siehe
+wallet_backtest_fetch.py-Docstring): 30
+Davon mit mind. 1 gefundenem Kauf im abgedeckten Zeitfenster: 7 (23.3%)
+Rohe Buy-Events (vor Dedup pro Wallet x Mint): 27
+Ausgewertete Entries (1 pro Wallet x Mint, fruehster Kauf): 23
+
+Wallets, bei denen das Zeitfenster (LOOKBACK_DAYS) durch das Paging voll
+abgedeckt wurde: 20/30. Bei den uebrigen ist die
+tatsaechlich abgedeckte Historie KUERZER (siehe wallets.<addr>.oldest_fetched_block_time
+in historical_buys.json) - einige der meistkopierten Top-Wallets der Liste
+(z.B. 'cented', 'kadenox', 'king trey', 'decu') werden zum Analysezeitpunkt so massiv
+mit fehlschlagenden Spam-/Front-Running-Transaktionen ueberflutet, dass selbst
+mehrere tausend Signaturen nur Sekunden bis Minuten in die Vergangenheit reichen -
+fuer diese Wallets liefert die Stichprobe ehrlich wenig bis keine historischen Buys.
+
+------------------------------------------------------------------------------
+TEIL 2/3 - WAS WURDE AUS DEN GEKAUFTEN COINS?
+------------------------------------------------------------------------------
+Noch auf Dexscreener handelbar: 6 (26.1%)
+Nicht mehr auffindbar / kein Pool mehr (= Totalverlust gewertet): 17 (73.9%)
+
+Median-Rendite seit Kauf (dead=-100%, SOL-denominiert, siehe Methodik in wallet_backtest_valuation.py): -100.0%
+Mittelwert-Rendite seit Kauf: -94.2% (Mittelwert wird von einzelnen Ausreissern verzerrt - Median ist die aussagekraeftigere Kennzahl, siehe bestehende Survivorship-Analyse im Repo)
+Erreichten >= 2x (+100%) seit Kauf: 0 (0.0%)
+Erreichten >= 1.5x (+50%) seit Kauf: 0 (0.0%)
+
+Vergleich zur vom Nutzer zitierten generellen Basis-Rate: ~99% Rug-Rate bei
+frischen Sub-100k-Launches OHNE Wallet-Signal (d.h. dort landen ueblicherweise
+~1% bei irgendeinem Erfolg). In dieser Stichprobe: 73.9% Totalverlust/
+delisted, 0.0% mit >=2x seit Kauf.
+
+------------------------------------------------------------------------------
+AUFSCHLUESSELUNG NACH TOKEN-ALTER ZUM KAUFZEITPUNKT
+(relevant fuer die Frage: kaufen diese Wallets wirklich FRISCHE Memecoins?)
+------------------------------------------------------------------------------
+  unbekannt (kein Dexscreener-pairCreatedAt): n=15, tot/delisted=100.0%, Median-Rendite=-100.0%
+  unbekannt (Zeitstempel unplausibel): n=5, tot/delisted=40.0%, Median-Rendite=-99.5%
+  <= 1h (sehr frischer Launch): n=2, tot/delisted=0.0%, Median-Rendite=-95.9%
+  1-24h: n=1, tot/delisted=0.0%, Median-Rendite=-99.4%
+
+------------------------------------------------------------------------------
+AUFSCHLUESSELUNG NACH HALTEDAUER SEIT KAUF (Tage bis HEUTE)
+(Proxy fuer 'wie lange nach Kauf lief der Coin, bevor er stieg/auf 0 ging' -
+ wir kennen NUR Kaufpreis vs. HEUTE, keinen Preisverlauf dazwischen, siehe
+ Einschraenkung oben. Relevant zum Abgleich mit MAX_HOLD_HOURS in
+ strategy.WALLET_SIGNAL_HYPOTHESIS_PARAMS, falls dort schon vorhanden.)
+------------------------------------------------------------------------------
+  <1 Tag: n=2, tot/delisted=100.0%, Median-Rendite=-100.0%
+  1-7 Tage: n=5, tot/delisted=60.0%, Median-Rendite=-100.0%
+  7-30 Tage: n=5, tot/delisted=60.0%, Median-Rendite=-100.0%
+  >= 30 Tage: n=11, tot/delisted=81.8%, Median-Rendite=-100.0%
+
+------------------------------------------------------------------------------
+PER-WALLET AUFFAELLIGKEITEN
+(nur Wallets mit >= 3 Entries - ACHTUNG: kleine
+Stichprobe pro Wallet, siehe Overfitting-Warnung am Ende)
+------------------------------------------------------------------------------
+  jerome: n=3, Median-Rendite=-66.6%, >=1.5x-Trefferquote=0.0%
+  BES: n=11, Median-Rendite=-100.0%, >=1.5x-Trefferquote=0.0%
+  centeddev: n=3, Median-Rendite=-100.0%, >=1.5x-Trefferquote=0.0%
+
+WARNUNG: Einzelwallet-Trefferquoten basieren hier auf sehr wenigen Datenpunkten
+(oft < 10 pro Wallet). Das ist NICHT robust genug, um einzelne Wallets fuer die
+Priorisierung zu bevorzugen/auszuschliessen - es ist ein Hinweis fuer eine spaetere,
+groessere Stichprobe, kein belastbares Ranking. Overfitting-Risiko hoch.
+
+==============================================================================
+EINORDNUNG DER NUTZER-HYPOTHESE
+==============================================================================
+Hypothese: 'Wallets aus der Axiom-Liste kaufen frische Memecoins mit deutlich
+besserer Erfolgswahrscheinlichkeit als die generelle ~99% Rug-Rate.'
+
+In dieser Stichprobe (23 Wallet-x-Mint-Entries aus 7 von 30 Wallets,
+23 der 30 Stichproben-Wallets lieferten GAR KEINEN auswertbaren Kauf im Fenster):
+  - 73.9% der Kaeufe sind heute tot/delisted (Totalverlust gewertet)
+  - 0.0% erreichten seit Kauf mindestens 2x, 0.0% mindestens 1.5x
+  - Median-Rendite seit Kauf: -100.0%
+
+Befund dieser Stichprobe: SCHWACH/NICHT UEBERZEUGEND GESTUETZT: der reine Totalverlust-Anteil liegt zwar unter der zitierten ~99%-Basisrate, aber KEIN einziger der 23 Kaeufe erreichte seit dem Kauf auch nur 1.5x - die 'Erfolgsfaelle' in dieser Stichprobe sind bestenfalls leichte Wertsteigerungen oder Seitwaertsbewegungen, keine belastbaren Gewinn-Trades. Das ist eher ein Hinweis, dass 'nicht komplett tot' und 'profitabler Trade' zwei verschiedene Dinge sind, die man nicht verwechseln sollte.
+
+Zusaetzliche Vorsicht ist geboten, weil:
+  1. Nur 7/30 Stichproben-Wallets ueberhaupt einen auswertbaren Kauf
+     lieferten (23 Entries) - die meisten der bekanntesten/meistkopierten Top-Wallets
+     ('cented', 'kadenox', 'king trey', 'decu', ...) konnten wegen der oben beschriebenen
+     Spam-Flut GAR NICHT ausgewertet werden. Diese Stichprobe ist also NICHT repraesentativ
+     fuer die 'besten' Wallets der Liste, sondern fuer die (zufaellig) weniger umkaempften.
+  2. n=23 ist statistisch klein - einzelne Ausreisser (z.B. ein einziger 10x-Trade) koennten
+     das Bild noch deutlich verschieben, in beide Richtungen.
+  3. Reiner Kaufpreis-vs-HEUTE-Vergleich mit Survivorship-/Look-ahead-Verzerrung (siehe
+     Einschraenkung ganz oben) - KEINE Simulation von echtem Entry-/Exit-Timing.
+  4. Ein Teil der 'toten' Coins sind moeglicherweise pump.fun-Bonding-Curve-Kaeufe VOR
+     Migration zu einem AMM-Pool, die auf Dexscreener nie als eigener 'Pair' auftauchen -
+     das wuerde die Totalverlust-Quote nach oben verzerren (siehe 'Zeitstempel unplausibel'-
+     Bucket oben, negative age_at_buy_hours deuten genau darauf hin).
+
+Fazit: Dieser erste, kleine historische Rueckblick liefert KEINEN klaren Beleg dafuer, dass
+die Wallet-Liste zuverlaessig Gewinner-Coins trifft - die Totalverlustquote ist zwar besser
+als die zitierte 99%-Baseline, aber niemand in der Stichprobe erreichte seit Kauf auch nur
++50%. Fuer eine belastbare Aussage braucht es entweder eine groessere/repraesentativere
+Stichprobe (idealerweise mit geloester Spam-Problematik bei den Top-Wallets) oder die im
+Repo bereits laufende Forward-Wallet-Signal-Strategie (src/paper_memecoin/strategy.py,
+WALLET_SIGNAL_HYPOTHESIS_PARAMS) mit echtem Entry-/Exit-Timing statt Kauf-vs-heute.

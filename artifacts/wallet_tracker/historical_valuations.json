@@ -1,0 +1,232 @@
+{
+  "4LvHfqXeXrjWL2PF2QwpHe3E3x6j7Wp8dkTTZw8EVNHg": {
+    "mint": "4LvHfqXeXrjWL2PF2QwpHe3E3x6j7Wp8dkTTZw8EVNHg",
+    "found": false,
+    "price_usd": null,
+    "market_cap": null,
+    "fdv": null,
+    "liquidity_usd": null,
+    "pair_created_at": null,
+    "dex_id": null
+  },
+  "6Jbtr2pJ1MzwQBfefkPwYd6pxukJ1BqbE1G5FLYspump": {
+    "mint": "6Jbtr2pJ1MzwQBfefkPwYd6pxukJ1BqbE1G5FLYspump",
+    "found": false,
+    "price_usd": null,
+    "market_cap": null,
+    "fdv": null,
+    "liquidity_usd": null,
+    "pair_created_at": null,
+    "dex_id": null
+  },
+  "6NveXHAvnNFHb65zw3ok9ibFoW9K7azbtiPh2xmfpump": {
+    "mint": "6NveXHAvnNFHb65zw3ok9ibFoW9K7azbtiPh2xmfpump",
+    "found": false,
+    "price_usd": null,
+    "market_cap": null,
+    "fdv": null,
+    "liquidity_usd": null,
+    "pair_created_at": null,
+    "dex_id": null
+  },
+  "7UBwou8uEpL7vZQ6dzbnoDm5ZmwrXhxyUaFcXQUwYoJm": {
+    "mint": "7UBwou8uEpL7vZQ6dzbnoDm5ZmwrXhxyUaFcXQUwYoJm",
+    "found": false,
+    "price_usd": null,
+    "market_cap": null,
+    "fdv": null,
+    "liquidity_usd": null,
+    "pair_created_at": null,
+    "dex_id": null
+  },
+  "8oxaBMjTnLALEdQUPmeDp3asY25T2v3UoLdkyc8Qpump": {
+    "mint": "8oxaBMjTnLALEdQUPmeDp3asY25T2v3UoLdkyc8Qpump",
+    "found": false,
+    "price_usd": null,
+    "market_cap": null,
+    "fdv": null,
+    "liquidity_usd": null,
+    "pair_created_at": null,
+    "dex_id": null
+  },
+  "8rWNVQoFyhWgKfBQGo1o7va5imP9rYT9jNroDqN4pump": {
+    "mint": "8rWNVQoFyhWgKfBQGo1o7va5imP9rYT9jNroDqN4pump",
+    "found": false,
+    "price_usd": null,
+    "market_cap": null,
+    "fdv": null,
+    "liquidity_usd": null,
+    "pair_created_at": "2026-09-09T18:25:58+00:00",
+    "dex_id": "meteora"
+  },
+  "9p59KYJMyyxvmhVC17tSX1p4V8M26UH6cXFR3ABmpump": {
+    "mint": "9p59KYJMyyxvmhVC17tSX1p4V8M26UH6cXFR3ABmpump",
+    "found": false,
+    "price_usd": null,
+    "market_cap": null,
+    "fdv": null,
+    "liquidity_usd": null,
+    "pair_created_at": null,
+    "dex_id": null
+  },
+  "Ai66LHZG9MCzg1WKdawwqduVAXpNDUuV8M3uyq5ppump": {
+    "mint": "Ai66LHZG9MCzg1WKdawwqduVAXpNDUuV8M3uyq5ppump",
+    "found": true,
+    "price_usd": 0.0002161,
+    "market_cap": 216155,
+    "fdv": 216155,
+    "liquidity_usd": 39066.77,
+    "pair_created_at": "2026-09-17T00:20:07+00:00",
+    "dex_id": "raydium"
+  },
+  "BUkB8GzARkYaQUC2xFR7Jc2vfFPvjz5vCZJasXznpump": {
+    "mint": "BUkB8GzARkYaQUC2xFR7Jc2vfFPvjz5vCZJasXznpump",
+    "found": false,
+    "price_usd": null,
+    "market_cap": null,
+    "fdv": null,
+    "liquidity_usd": null,
+    "pair_created_at": null,
+    "dex_id": null
+  },
+  "BgSSuzyjpscPUg3NBq3r4pDXEi2dJSgU1MWddEzJgrok": {
+    "mint": "BgSSuzyjpscPUg3NBq3r4pDXEi2dJSgU1MWddEzJgrok",
+    "found": false,
+    "price_usd": null,
+    "market_cap": null,
+    "fdv": null,
+    "liquidity_usd": null,
+    "pair_created_at": null,
+    "dex_id": null
+  },
+  "CvuBcuvEhqZbQjbmW3LXcaRWunsrgAND2M5h1fex84qF": {
+    "mint": "CvuBcuvEhqZbQjbmW3LXcaRWunsrgAND2M5h1fex84qF",
+    "found": true,
+    "price_usd": 2.102e-06,
+    "market_cap": 2000,
+    "fdv": 2000,
+    "liquidity_usd": 2114.81,
+    "pair_created_at": "2026-09-16T19:39:16+00:00",
+    "dex_id": "pumpswap"
+  },
+  "D8LXv1tDhzDyBn5xnMXXqaMvQfAqxYimfSXNNDxapump": {
+    "mint": "D8LXv1tDhzDyBn5xnMXXqaMvQfAqxYimfSXNNDxapump",
+    "found": false,
+    "price_usd": null,
+    "market_cap": null,
+    "fdv": null,
+    "liquidity_usd": null,
+    "pair_created_at": null,
+    "dex_id": null
+  },
+  "DLYQBXkRo43Ct96fd9Cr7y5tZP5yQKUBLMTZU92epump": {
+    "mint": "DLYQBXkRo43Ct96fd9Cr7y5tZP5yQKUBLMTZU92epump",
+    "found": true,
+    "price_usd": 1.291e-05,
+    "market_cap": 12777,
+    "fdv": 12777,
+    "liquidity_usd": 12656.08,
+    "pair_created_at": "2026-08-18T11:26:05+00:00",
+    "dex_id": "pumpswap"
+  },
+  "DaQZRBxkb4nuVUZ3gtVz3XqFeFNqNZg3iWs3ZYLYbygs": {
+    "mint": "DaQZRBxkb4nuVUZ3gtVz3XqFeFNqNZg3iWs3ZYLYbygs",
+    "found": false,
+    "price_usd": null,
+    "market_cap": null,
+    "fdv": null,
+    "liquidity_usd": null,
+    "pair_created_at": null,
+    "dex_id": null
+  },
+  "EfLEKDXHarKdUQqnhVdAFW6dFhd8gP9X4QGCnqhbMCbq": {
+    "mint": "EfLEKDXHarKdUQqnhVdAFW6dFhd8gP9X4QGCnqhbMCbq",
+    "found": false,
+    "price_usd": null,
+    "market_cap": null,
+    "fdv": null,
+    "liquidity_usd": null,
+    "pair_created_at": null,
+    "dex_id": null
+  },
+  "EsupfB4p6XAn2W8DHzvA4mAd9WvdEsMswhosjHFJpump": {
+    "mint": "EsupfB4p6XAn2W8DHzvA4mAd9WvdEsMswhosjHFJpump",
+    "found": false,
+    "price_usd": null,
+    "market_cap": null,
+    "fdv": null,
+    "liquidity_usd": null,
+    "pair_created_at": null,
+    "dex_id": null
+  },
+  "F16RVE54Yu3xxvLfzB5qkqLUXiDZgRW5xSWuha2VSTNK": {
+    "mint": "F16RVE54Yu3xxvLfzB5qkqLUXiDZgRW5xSWuha2VSTNK",
+    "found": true,
+    "price_usd": 8.081e-06,
+    "market_cap": 8081,
+    "fdv": 8081,
+    "liquidity_usd": 12998.23,
+    "pair_created_at": "2026-09-02T14:42:28+00:00",
+    "dex_id": "raydium"
+  },
+  "FnTGZSH7aASVNmxUKpBFaVgFfxrb5uotuujqJbaMNN65": {
+    "mint": "FnTGZSH7aASVNmxUKpBFaVgFfxrb5uotuujqJbaMNN65",
+    "found": true,
+    "price_usd": 5.302e-06,
+    "market_cap": 5303,
+    "fdv": 5303,
+    "liquidity_usd": 6953.69,
+    "pair_created_at": "2026-09-07T18:03:50+00:00",
+    "dex_id": "raydium"
+  },
+  "GN2Qz244tRLUBdjCVgN7LEf8NCTMy6YW1WwdpHrUYDqU": {
+    "mint": "GN2Qz244tRLUBdjCVgN7LEf8NCTMy6YW1WwdpHrUYDqU",
+    "found": false,
+    "price_usd": null,
+    "market_cap": null,
+    "fdv": null,
+    "liquidity_usd": null,
+    "pair_created_at": null,
+    "dex_id": null
+  },
+  "LekVijLi3RFGWcsLFzcWAiDQjFxqcEZ21LDpGu22mhx": {
+    "mint": "LekVijLi3RFGWcsLFzcWAiDQjFxqcEZ21LDpGu22mhx",
+    "found": true,
+    "price_usd": 3.851e-05,
+    "market_cap": 36591,
+    "fdv": 36591,
+    "liquidity_usd": 927.92,
+    "pair_created_at": "2026-09-15T16:22:57+00:00",
+    "dex_id": "raydium"
+  },
+  "LwKLXWK48dxdQpVAqdUzxZ5f3JVJyssn1pKr1YJpump": {
+    "mint": "LwKLXWK48dxdQpVAqdUzxZ5f3JVJyssn1pKr1YJpump",
+    "found": false,
+    "price_usd": null,
+    "market_cap": null,
+    "fdv": null,
+    "liquidity_usd": null,
+    "pair_created_at": null,
+    "dex_id": null
+  },
+  "SPCXxcqXj6e5dJDVNovHN8744zkbhM2bYudU45BimGb": {
+    "mint": "SPCXxcqXj6e5dJDVNovHN8744zkbhM2bYudU45BimGb",
+    "found": false,
+    "price_usd": null,
+    "market_cap": null,
+    "fdv": null,
+    "liquidity_usd": null,
+    "pair_created_at": "2026-09-16T18:20:00+00:00",
+    "dex_id": "pumpfun"
+  },
+  "rxtt7D5JY2ocUbLEpSG3LB4Zb3aQTW1gX6AYxrFpump": {
+    "mint": "rxtt7D5JY2ocUbLEpSG3LB4Zb3aQTW1gX6AYxrFpump",
+    "found": false,
+    "price_usd": null,
+    "market_cap": null,
+    "fdv": null,
+    "liquidity_usd": null,
+    "pair_created_at": null,
+    "dex_id": null
+  }
+}
