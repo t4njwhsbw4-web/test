@@ -1,5 +1,5 @@
 {
-  "cash": 618.0340091307751,
+  "cash": 534.3674565934284,
   "positions": {
     "9mmF8BJ5saTbq5gnW21koJGWJbWX1nk842ivCYSapump::baseline": {
       "token_address": "9mmF8BJ5saTbq5gnW21koJGWJbWX1nk842ivCYSapump",
@@ -10,23 +10,24 @@
       "entry_time": "2026-09-18T07:48:05.287057+00:00",
       "opened_reason": "score=65 PASS: Liquidität $16,245 OK (über Minimum, unter robustem Richtwert). | Liq/MCap-Ratio 37.08% OK. | Buy/Sell-Ratio 1.15 OK. | RugCheck: mintAuthority revoked/nicht gesetzt. | RugCheck: freezeAuthority revoked/nicht gesetzt. | RugCheck: totalHolders=0/nicht indiziert (bei <20-Minuten-Launches häufig) - unbekannt, als Risikosignal gewertet, nicht als neutral. | RugCheck: Top-10-Holder-Konzentration nicht verfügbar/nicht indiziert - als Risikosignal gewertet, nicht als neutral. | RugCheck: Dev-/Creator-Wallet-Anteil 0% OK. | RugCheck score_normalised=50 OK. | RugCheck risks: High market cap per holder"
     },
-    "7i7XaXM8SHt4HgossaqteTBqC8jZdczLN2nwHwU6pump::baseline": {
-      "token_address": "7i7XaXM8SHt4HgossaqteTBqC8jZdczLN2nwHwU6pump",
+    "6hrmg68eD7wyqEXAS81Bdk6WfRju9KKE58YD9v9VL46N::baseline": {
+      "token_address": "6hrmg68eD7wyqEXAS81Bdk6WfRju9KKE58YD9v9VL46N",
       "strategy": "baseline",
-      "symbol": "DEXWHALE",
-      "qty": 832431.5531016256,
-      "entry_price": 9.61792e-05,
-      "entry_time": "2026-09-18T07:48:05.287057+00:00",
-      "opened_reason": "score=65 PASS: Liquidität $25,400 OK (über Minimum, unter robustem Richtwert). | Liq/MCap-Ratio 27.46% OK. | Buy/Sell-Ratio 1.14 OK. | RugCheck: mintAuthority revoked/nicht gesetzt. | RugCheck: freezeAuthority revoked/nicht gesetzt. | RugCheck: totalHolders=0/nicht indiziert (bei <20-Minuten-Launches häufig) - unbekannt, als Risikosignal gewertet, nicht als neutral. | RugCheck: Top-10-Holder-Konzentration nicht verfügbar/nicht indiziert - als Risikosignal gewertet, nicht als neutral. | RugCheck: Dev-/Creator-Wallet-Anteil 0% OK. | RugCheck score_normalised=50 OK. | RugCheck risks: High market cap per holder"
+      "symbol": "BCN",
+      "qty": 5004634.219440694,
+      "entry_price": 1.3832e-05,
+      "entry_time": "2026-09-18T07:54:26.555975+00:00",
+      "opened_reason": "score=100 PASS: Liquidität $10,070 OK (über Minimum, unter robustem Richtwert). | Liq/MCap-Ratio 75.67% OK. | Buy/Sell-Ratio 1.44 OK. | RugCheck übersprungen: Tagesbudget erschöpft, Stufe-1-Ergebnis bleibt massgeblich."
     },
-    "3KactTzmKDvWr71LJx4cCt27RbqP9k68LZNtRp9TSTNK::baseline": {
-      "token_address": "3KactTzmKDvWr71LJx4cCt27RbqP9k68LZNtRp9TSTNK",
-      "strategy": "baseline",
-      "symbol": "LockedInu",
-      "qty": 1087108.1158019095,
-      "entry_price": 6.5988e-05,
-      "entry_time": "2026-09-18T07:48:05.287057+00:00",
-      "opened_reason": "score=65 PASS: Liquidität $21,966 OK (über Minimum, unter robustem Richtwert). | Liq/MCap-Ratio 34.62% OK. | Buy/Sell-Ratio 1.12 OK. | RugCheck: mintAuthority revoked/nicht gesetzt. | RugCheck: freezeAuthority revoked/nicht gesetzt. | RugCheck: totalHolders=0/nicht indiziert (bei <20-Minuten-Launches häufig) - unbekannt, als Risikosignal gewertet, nicht als neutral. | RugCheck: Top-10-Holder-Konzentration nicht verfügbar/nicht indiziert - als Risikosignal gewertet, nicht als neutral. | RugCheck: Dev-/Creator-Wallet-Anteil 0% OK. | RugCheck score_normalised=50 OK. | RugCheck risks: High market cap per holder"
+    "6hrmg68eD7wyqEXAS81Bdk6WfRju9KKE58YD9v9VL46N::mcap_hypothesis": {
+      "token_address": "6hrmg68eD7wyqEXAS81Bdk6WfRju9KKE58YD9v9VL46N",
+      "strategy": "mcap_hypothesis",
+      "symbol": "BCN",
+      "qty": 4484152.260618861,
+      "entry_price": 1.3832e-05,
+      "entry_time": "2026-09-18T07:54:26.555975+00:00",
+      "opened_reason": "score=100 PASS: Liquidität $10,070 OK (über Minimum, unter robustem Richtwert). | Liq/MCap-Ratio 75.67% OK. | Buy/Sell-Ratio 1.44 OK. | RugCheck übersprungen: Tagesbudget erschöpft, Stufe-1-Ergebnis bleibt massgeblich.",
+      "entry_mcap": 13308
     }
   }
 }

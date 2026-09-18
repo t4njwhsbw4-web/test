@@ -124,6 +124,27 @@ USER_FILTER_PARAMS = {
     # Wallets sehen).
     "wallet_trend_window_minutes": 5.0,
     "wallet_trend_min_current_wallets": 2,
+
+    # --- Adaptiver Exit statt festem Kursziel ---
+    # Nutzer-Vorgabe (wörtlich): "du musst rausgehen wenn du denkst, [...] es
+    # muss keine Verdopplung sein aber probiere das meiste herauszuholen."
+    # Ein LLM-Cron-Prototyp hat kein echtes Gefuehl/keine Intuition - die
+    # ehrliche technische Uebersetzung davon ist EIN nachgezogener Stop
+    # (faehrt dem Hoechstpreis seit Kauf hinterher, sichert Gewinn, laesst
+    # Aufwaertsbewegung aber weiterlaufen) PLUS das Umkehr-Signal, das der
+    # Nutzer selbst zum Einstieg nutzt: wenn Tracked-Wallets, die vorher
+    # kauften, jetzt verkaufen, ist das der staerkste verfuegbare Hinweis
+    # "es dreht" - kein Rate-Algorithmus, sondern dasselbe Signal umgekehrt.
+    #
+    # peak_activation_multiple: der Trailing-Stop greift erst, NACHDEM der
+    # Kurs seit Einstieg um mind. diesen Faktor gestiegen ist - sonst waere
+    # er nur ein zweiter, engerer Stop-Loss und wuerde Gewinnchancen kappen,
+    # bevor ueberhaupt ein Gewinn entstanden ist. Vor Aktivierung gilt
+    # weiterhin ausschliesslich das Stop-Loss-Band/Mcap-Floor unten.
+    "peak_activation_multiple": 1.30,  # ab +30% ueber Einstieg aktiv
+    "trailing_stop_pct": 0.30,  # danach: Exit bei -30% vom bisherigen Hoch
+    "wallet_sell_signal_window_minutes": 15.0,  # Tracked-Wallet-Verkauf in
+    # diesem Fenster => sofortiger Exit, unabhaengig vom Preis.
 }
 
 ALT_MAX_AGE_MINUTES_STRICT = 15.0  # vom Nutzer manchmal genannter strengerer Wert; nicht Default, aber hier als Referenz benannt.
@@ -245,6 +266,26 @@ def check_wallet_trend(token_mint: str, now: dt.datetime | None = None) -> Walle
         window_minutes=window,
         min_required_current=min_required,
     )
+
+
+def check_wallet_sell_signal(token_mint: str, now: dt.datetime | None = None) -> tuple[bool, int, list[str]]:
+    """Umkehrung von check_wallet_trend(): hat mindestens eine Tracked-Wallet
+    diesen Token innerhalb von wallet_sell_signal_window_minutes verkauft?
+    Liest ausschliesslich wallet_trades.csv (confluence_signals.csv fuehrt
+    aktuell keine Sell-Aggregate) - robust gegen fehlende/leere Datei,
+    liefert dann (False, 0, []), nie eine Exception."""
+    now = now or _now()
+    window_start = now - dt.timedelta(minutes=USER_FILTER_PARAMS["wallet_sell_signal_window_minutes"])
+    sellers: list[str] = []
+    for row in _read_csv_rows(WALLET_TRADES_CSV_PATH):
+        if row.get("token_mint") != token_mint or row.get("action") != "sell":
+            continue
+        block_time = _parse_dt(row.get("block_time"))
+        if block_time is None or block_time < window_start or block_time > now:
+            continue
+        address = row.get("wallet_address") or row.get("wallet_label") or "?"
+        sellers.append(address)
+    return (len(sellers) > 0, len(sellers), sellers)
 
 
 def _rugcheck_top10_and_dev_pct(token_address: str) -> tuple[float | None, float | None, float | None, bool]:
@@ -401,24 +442,67 @@ def should_exit_user_filter(
     current_mcap: float | None,
     entry_time: dt.datetime,
     now: dt.datetime,
+    peak_price: float | None = None,
+    token_mint: str | None = None,
 ) -> tuple[bool, str] | tuple[bool, None]:
-    """Exit-Regeln der user_filter-Strategie: Stop-Loss-Band (-45% Default,
-    Nutzer-Bandbreite -40% bis -50%) ODER Mcap faellt unter mcap_exit_floor_usd
-    ($10.000) - was ZUERST eintritt. Beide werden pro Poll geprüft (dieser
-    Prototyp ist kein Tick-Stream); wenn innerhalb desselben Polls beide
-    Bedingungen bereits erfüllt sind, wird das als "beide gleichzeitig
-    ausgelöst" behandelt und der Stop-Loss zuerst gemeldet - eine exakte
-    Reihenfolge zwischen zwei Polls ist mit diesem Cron-Modell nicht
-    feststellbar. Kein Take-Profit-Zwangsexit (siehe TAKE_PROFIT_RESEARCH_NOTE)
-    und MAX_HOLD_HOURS als zusätzliches Sicherheitsnetz, falls weder SL noch
-    Mcap-Floor je auslösen."""
+    """Exit-Regeln der user_filter-Strategie, PRUEFREIHENFOLGE (erste
+    zutreffende Regel gewinnt):
+
+    1. Wallet-Sell-Signal: eine Tracked-Wallet hat den Token innerhalb von
+       wallet_sell_signal_window_minutes verkauft -> SOFORTIGER Exit,
+       unabhaengig vom Kurs. Nutzer-Vorgabe woertlich: "du musst rausgehen
+       wenn du denkst [...] wann okay ist zum rausgehen" - die einzige
+       nicht-geratene Uebersetzung davon ist dasselbe Signal umgekehrt, das
+       auch den Einstieg ausgeloest hat.
+    2. Stop-Loss-Band (-45% Default) VOM EINSTIEGSPREIS - greift immer,
+       schuetzt Kapital unabhaengig davon, ob der Trailing-Stop schon aktiv
+       ist (ein Trade, der nie ins Plus lief, hat keinen "Peak" zum
+       Trailen - hier bleibt der klassische SL massgeblich).
+    3. Trailing-Stop VOM HOECHSTPREIS SEIT KAUF, aber NUR nachdem der Kurs
+       mindestens peak_activation_multiple (Default 1.30 = +30%) erreicht
+       hat - sonst wuerde ein enger Trailing-Stop Gewinnchancen kappen,
+       bevor ueberhaupt ein Gewinn entstand. Das ist der Kern von "das
+       meiste herausholen": laeuft der Kurs weiter, laeuft die Position mit;
+       dreht er um trailing_stop_pct vom bisherigen Hoch, wird verkauft.
+    4. Mcap-Floor ($10.000) - Nutzer-Vorgabe, greift immer.
+    5. MAX_HOLD_HOURS als Sicherheitsnetz, falls nichts anderes je greift
+       (kein Nutzer-Limit vorgegeben).
+
+    peak_price/token_mint sind optional (Rueckwaertskompatibilitaet): ohne
+    peak_price verhaelt sich die Funktion wie zuvor (kein Trailing-Stop,
+    nur SL/Mcap-Floor/Zeitlimit); ohne token_mint wird kein Wallet-Sell-
+    Signal geprueft. run_loop.py uebergibt beide."""
     params = USER_FILTER_PARAMS
     if entry_price <= 0:
         return False, None
 
-    change = (current_price - entry_price) / entry_price
-    if change <= -params["stop_loss_pct_default"]:
-        return True, f"user_filter_stop_loss ({change:+.1%}, Default -{params['stop_loss_pct_default']:.0%} aus Band -{params['stop_loss_pct_min']:.0%}/-{params['stop_loss_pct_max']:.0%})"
+    if token_mint is not None:
+        sold, n_sellers, _ = check_wallet_sell_signal(token_mint, now=now)
+        if sold:
+            return True, (
+                f"user_filter_wallet_sell_signal ({n_sellers} Tracked-Wallet(s) haben verkauft "
+                f"innerhalb der letzten {params['wallet_sell_signal_window_minutes']:.0f}min - "
+                "dasselbe Signal wie beim Einstieg, umgekehrt)"
+            )
+
+    change_from_entry = (current_price - entry_price) / entry_price
+    if change_from_entry <= -params["stop_loss_pct_default"]:
+        return True, (
+            f"user_filter_stop_loss ({change_from_entry:+.1%}, Default "
+            f"-{params['stop_loss_pct_default']:.0%} aus Band "
+            f"-{params['stop_loss_pct_min']:.0%}/-{params['stop_loss_pct_max']:.0%})"
+        )
+
+    effective_peak = max(peak_price or entry_price, current_price, entry_price)
+    if effective_peak >= entry_price * params["peak_activation_multiple"]:
+        drawdown_from_peak = (current_price - effective_peak) / effective_peak
+        if drawdown_from_peak <= -params["trailing_stop_pct"]:
+            return True, (
+                f"user_filter_trailing_stop (Hoch seit Kauf {effective_peak:.8f}, "
+                f"aktuell {current_price:+.8f}, {drawdown_from_peak:+.1%} vom Hoch, "
+                f"Trail -{params['trailing_stop_pct']:.0%}, aktiviert ab "
+                f"{params['peak_activation_multiple']:.2f}x Einstieg; Gesamt seit Kauf {change_from_entry:+.1%})"
+            )
 
     if current_mcap is not None and current_mcap < params["mcap_exit_floor_usd"]:
         return True, f"user_filter_mcap_floor (Mcap ${current_mcap:,.0f} < ${params['mcap_exit_floor_usd']:,.0f})"

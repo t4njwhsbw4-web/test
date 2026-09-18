@@ -173,10 +173,16 @@ def run_once() -> dict:
                 pos["entry_price"], current_price, entry_time, now,
             )
         elif strategy_name == "user_filter":
+            # Hoechstpreis seit Kauf fortschreiben, bevor die Exit-Pruefung
+            # laeuft - der Trailing-Stop braucht den Peak VOR diesem Tick,
+            # inkl. des aktuellen Preises (sonst koennte ein neues Hoch nie
+            # erkannt werden, weil es erst im naechsten Zyklus im State steht).
+            pos["peak_price"] = max(pos.get("peak_price", pos["entry_price"]), current_price)
             exit_flag, exit_reason = strategy.should_exit_user_filter(
                 entry_price=pos["entry_price"], current_price=current_price,
                 entry_mcap=pos.get("entry_mcap"), current_mcap=current_mcap,
                 entry_time=entry_time, now=now,
+                peak_price=pos["peak_price"], token_mint=token_address,
             )
         else:
             exit_flag, exit_reason = strategy.should_exit(pos["entry_price"], current_price, entry_time, now)
@@ -263,6 +269,7 @@ def run_once() -> dict:
                             "entry_price": order.filled_price,
                             "entry_mcap": c.market_cap,
                             "entry_time": now.isoformat(),
+                            "peak_price": order.filled_price,
                             "opened_reason": reason_text,
                         }
                         n_bought += 1
