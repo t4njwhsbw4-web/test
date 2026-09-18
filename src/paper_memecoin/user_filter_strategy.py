@@ -186,6 +186,11 @@ class WalletTrendResult:
     increasing: bool
     window_minutes: float
     min_required_current: int
+    avg_tracker_cost_sol: float | None  # volumengewichteter Schnittpreis (SOL/Token)
+    # der kaufenden Tracked-Wallets im aktuellen Fenster - Idee vom Nutzer
+    # (Axiom zeigt "Current Average Cost" als Referenzlinie im Chart). Bewusst
+    # NICHT nach USD umgerechnet (kein SOL/USD-Kurs zum jeweiligen Zeitpunkt
+    # ohne weitere Quelle verfuegbar) - rein informativ in SOL, kein Gate.
 
 
 @dataclasses.dataclass
@@ -239,6 +244,34 @@ def _distinct_buying_wallets(token_mint: str, window_start: dt.datetime, window_
     return wallets
 
 
+def _avg_tracker_cost_sol(token_mint: str, window_start: dt.datetime, window_end: dt.datetime) -> float | None:
+    """Volumengewichteter Durchschnittspreis (SOL pro Token) der Tracked-
+    Wallet-Kaeufe im Fenster - Nachbau von Axioms 'Current Average Cost'-
+    Referenzlinie. Gewichtung nach amount_tokens (grosse Kaeufe zaehlen
+    staerker), nicht nach Anzahl Trades. None bei 0 Kaeufen oder fehlenden/
+    kaputten Zahlenfeldern - kein erfundener Wert."""
+    total_sol = 0.0
+    total_tokens = 0.0
+    for row in _read_csv_rows(WALLET_TRADES_CSV_PATH):
+        if row.get("token_mint") != token_mint or row.get("action") != "buy":
+            continue
+        block_time = _parse_dt(row.get("block_time"))
+        if block_time is None or block_time < window_start or block_time >= window_end:
+            continue
+        try:
+            sol = float(row.get("amount_sol", ""))
+            tokens = float(row.get("amount_tokens", ""))
+        except (TypeError, ValueError):
+            continue
+        if tokens <= 0 or sol <= 0:
+            continue
+        total_sol += sol
+        total_tokens += tokens
+    if total_tokens <= 0:
+        return None
+    return total_sol / total_tokens
+
+
 def check_wallet_trend(token_mint: str, now: dt.datetime | None = None) -> WalletTrendResult:
     """Prüft die Nutzer-Bedingung "so paar kaufen und immer mehr": Anzahl
     distinct kaufender Tracked-Wallets im letzten Fenster (wallet_trend_window_minutes)
@@ -256,8 +289,10 @@ def check_wallet_trend(token_mint: str, now: dt.datetime | None = None) -> Walle
     increasing = len(recent) > len(prior)
     min_required = USER_FILTER_PARAMS["wallet_trend_min_current_wallets"]
     matched = increasing and len(recent) >= min_required
+    avg_cost = _avg_tracker_cost_sol(token_mint, recent_start, now)
 
     return WalletTrendResult(
+        avg_tracker_cost_sol=avg_cost,
         token_mint=token_mint,
         matched=matched,
         wallets_recent_window=len(recent),
@@ -417,6 +452,12 @@ def check_user_filter_entry(c: Candidate, now: dt.datetime | None = None) -> Use
         reasons.append(
             f"Wallet-Trend erfüllt: {wallet_trend.wallets_recent_window} kaufende Wallets in den letzten "
             f"{wallet_trend.window_minutes:.0f}min, zunehmend gegenüber {wallet_trend.wallets_prior_window} davor."
+        )
+    if wallet_trend.avg_tracker_cost_sol is not None:
+        reasons.append(
+            f"Tracker-Schnittkosten (informativ, wie Axioms 'Current Average Cost'): "
+            f"{wallet_trend.avg_tracker_cost_sol:.10f} SOL/Token, volumengewichtet über die kaufenden "
+            "Tracked-Wallets im aktuellen Fenster - kein Gate."
         )
 
     return UserFilterEntryResult(
