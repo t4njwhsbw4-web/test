@@ -1,0 +1,241 @@
+====================================================================================================
+TEIL 1 - HISTORISCHE RENDITE DES BASIS-TRADES (Binance USD-M Perpetuals)
+====================================================================================================
+
+-- Brutto-Funding auf NOMINAL (noch ohne Gebuehren, ohne Kapitalbindung) --
+  symbol        von        bis  tage  brutto_ann_%  median_tag_bps  mittel_tag_bps  tage_positiv_%
+ BTCUSDT 2020-01-01 2026-08-31  2435         11.80            2.26            3.23           87.68
+ ETHUSDT 2020-01-01 2026-08-31  2435         13.95            2.40            3.82           88.05
+ SOLUSDT 2020-09-13 2026-08-31  2179          0.17            1.93            0.05           71.23
+ BNBUSDT 2020-02-10 2026-08-31  2395         -0.09            0.00           -0.02           34.91
+ XRPUSDT 2020-01-06 2026-08-31  2430         14.70            2.53            4.03           80.91
+DOGEUSDT 2020-07-10 2026-08-31  2244         12.44            2.43            3.41           83.69
+
+-- Brutto-Funding p.a. auf Nominal, pro Kalenderjahr (%) --
+      BTCUSDT  ETHUSDT  SOLUSDT  BNBUSDT  XRPUSDT  DOGEUSDT
+ts                                                         
+2020    17.19    27.41   -12.44     2.53    24.56      9.37
+2021    30.61    37.54    28.59    21.72    48.14     38.51
+2022     4.16     0.79   -38.00   -12.62     0.01      3.45
+2023     7.87     8.26     1.30    -8.35     8.20     10.00
+2024    11.92    12.96    13.62    -3.32    14.19     14.00
+2025     5.13     4.93     0.35    -2.08     3.53      4.34
+2026     2.62     1.57    -1.67     2.74    -0.81      2.46
+
+-- NETTO p.a. auf GEBUNDENES KAPITAL, Haltedauer 1 Jahr (%) --
+   (Gebuehren: 4 Fills; Taker 10 bps/Fill = 40 bps, Maker 2 bps/Fill = 8 bps)
+  5x Short (C=1.20)    Taker    BTC=  9.50    ETH= 11.29    SOL= -0.19    BNB= -0.41    XRP= 11.92   DOGE= 10.03
+  5x Short (C=1.20)    Maker    BTC=  9.76    ETH= 11.56    SOL=  0.08    BNB= -0.14    XRP= 12.18   DOGE= 10.30
+  3x Short (C=1.33)    Taker    BTC=  8.55    ETH= 10.16    SOL= -0.17    BNB= -0.37    XRP= 10.73   DOGE=  9.03
+  3x Short (C=1.33)    Maker    BTC=  8.79    ETH= 10.40    SOL=  0.07    BNB= -0.13    XRP= 10.97   DOGE=  9.27
+  2x Short (C=1.50)    Taker    BTC=  7.60    ETH=  9.03    SOL= -0.15    BNB= -0.33    XRP=  9.53   DOGE=  8.02
+  2x Short (C=1.50)    Maker    BTC=  7.81    ETH=  9.24    SOL=  0.06    BNB= -0.11    XRP=  9.75   DOGE=  8.24
+
+-- Einfluss der Haltedauer (BTCUSDT, C=1.20, netto auf Kapital, %) --
+  Haltedauer     7 Tage: Taker   -7.55   Maker    6.36
+  Haltedauer    30 Tage: Taker    5.78   Maker    9.02
+  Haltedauer    90 Tage: Taker    8.48   Maker    9.56
+  Haltedauer   365 Tage: Taker    9.50   Maker    9.76
+  Haltedauer  1095 Tage: Taker    9.72   Maker    9.81
+
+-- Brutto-Funding p.a. auf Nominal nach Regime (Spot > / < SMA200) (%) --
+  symbol  Bull_ann_%  Bull_tage  Bear_ann_%  Bear_tage
+ BTCUSDT       17.05       1372        3.11        986
+ ETHUSDT       21.10       1337        2.46       1021
+ SOLUSDT       15.46        992      -15.25       1021
+ BNBUSDT        2.78       1386       -5.63        972
+ XRPUSDT       22.32       1161        5.09       1197
+DOGEUSDT       21.53        968        5.54       1276
+
+-- Verteilung rollierender 60-Tage-Brutto-Renditen auf Nominal (%) --
+  symbol      min      p10   median      p90      p99      max  anteil_negativ_%
+ BTCUSDT    -0.81     0.31     1.07     4.32    11.15    13.64              3.70
+ ETHUSDT    -1.61     0.19     1.13     6.05    14.91    17.54              6.06
+ SOLUSDT   -42.34    -1.33     0.62     4.16    13.96    14.72             32.59
+ BNBUSDT    -8.65    -3.39    -0.47     2.72    12.13    13.31             61.43
+ XRPUSDT    -1.01    -0.39     1.14     5.88    16.83    18.75             20.16
+DOGEUSDT    -1.26     0.25     1.06     5.23    14.53    17.17              7.28
+
+====================================================================================================
+NEGATIVE FUNDING-PHASEN
+====================================================================================================
+
+BTCUSDT: 12.3% aller Tage negativ; laengste Negativ-Serie: 11 Tage
+  5 tiefste zusammenhaengende Negativ-Serien:
+     start        end  tage  kumuliert_pct
+2020-03-13 2020-03-21     9         -1.016
+2020-03-28 2020-04-02     6         -0.395
+2022-11-09 2022-11-11     3         -0.327
+2021-07-19 2021-07-26     8         -0.297
+2026-04-11 2026-04-21    11         -0.159
+  Tiefster Funding-Drawdown: -1.49% des Nominals, 2020-03-12 bis 2020-04-23 (42 Tage)
+
+ETHUSDT: 12.0% aller Tage negativ; laengste Negativ-Serie: 13 Tage
+  5 tiefste zusammenhaengende Negativ-Serien:
+     start        end  tage  kumuliert_pct
+2022-09-03 2022-09-15    13         -1.505
+2020-03-13 2020-03-13     1         -0.300
+2021-05-19 2021-05-19     1         -0.293
+2022-11-08 2022-11-11     4         -0.272
+2022-06-11 2022-06-19     9         -0.212
+  Tiefster Funding-Drawdown: -1.79% des Nominals, 2022-08-22 bis 2022-09-25 (34 Tage)
+
+SOLUSDT: 28.8% aller Tage negativ; laengste Negativ-Serie: 28 Tage
+  5 tiefste zusammenhaengende Negativ-Serien:
+     start        end  tage  kumuliert_pct
+2022-11-08 2022-12-04    27        -36.009
+2020-12-24 2021-01-08    16         -8.858
+2022-12-17 2023-01-09    24         -6.558
+2020-11-26 2020-12-02     7         -2.757
+2025-10-11 2025-10-14     4         -1.062
+  Tiefster Funding-Drawdown: -43.40% des Nominals, 2022-04-30 bis 2023-01-13 (258 Tage)
+
+BNBUSDT: 33.9% aller Tage negativ; laengste Negativ-Serie: 40 Tage
+  5 tiefste zusammenhaengende Negativ-Serien:
+     start        end  tage  kumuliert_pct
+2020-09-27 2020-10-10    14         -4.166
+2020-09-04 2020-09-18    15         -3.544
+2023-03-17 2023-04-04    19         -2.925
+2023-04-21 2023-05-13    23         -2.736
+2020-04-13 2020-04-23    11         -2.726
+  Tiefster Funding-Drawdown: -30.82% des Nominals, 2021-05-18 bis 2025-06-24 (1498 Tage)
+
+XRPUSDT: 19.1% aller Tage negativ; laengste Negativ-Serie: 16 Tage
+  5 tiefste zusammenhaengende Negativ-Serien:
+     start        end  tage  kumuliert_pct
+2020-12-09 2020-12-12     4         -1.572
+2020-12-29 2020-12-31     3         -0.668
+2021-12-22 2021-12-25     4         -0.635
+2020-03-12 2020-03-14     3         -0.590
+2020-12-23 2020-12-24     2         -0.457
+  Tiefster Funding-Drawdown: -2.48% des Nominals, 2022-05-09 bis 2023-01-05 (241 Tage)
+
+DOGEUSDT: 16.3% aller Tage negativ; laengste Negativ-Serie: 11 Tage
+  5 tiefste zusammenhaengende Negativ-Serien:
+     start        end  tage  kumuliert_pct
+2021-01-29 2021-02-01     4         -2.519
+2020-09-20 2020-09-27     8         -0.991
+2022-05-09 2022-05-19    11         -0.590
+2021-06-20 2021-06-27     8         -0.483
+2021-02-24 2021-02-27     4         -0.383
+  Tiefster Funding-Drawdown: -2.52% des Nominals, 2021-01-28 bis 2021-02-01 (4 Tage)
+
+====================================================================================================
+TEIL 2 - LIQUIDATIONSRISIKO DES SHORT-BEINS
+====================================================================================================
+Ohne Nachschuss wird ein Short mit Margin-Quote m bei ca. +(m - MMR) liquidiert.
+MMR-Annahme: 0.5%  |  Zahlen sind echte High-basierte Kursanstiege.
+
+BTCUSDT:
+  Fenster    1 Tage: max Anstieg     24.1% (2020-03-13) -> noetige Margin    24.6% => C= 1.25 | p99   11.6%
+  Fenster    7 Tage: max Anstieg     43.0% (2021-01-02) -> noetige Margin    43.5% => C= 1.44 | p99   29.1%
+  Fenster   30 Tage: max Anstieg    132.6% (2020-12-12) -> noetige Margin   133.1% => C= 2.33 | p99   76.6%
+  Fenster   90 Tage: max Anstieg    271.5% (2020-10-11) -> noetige Margin   272.0% => C= 3.72 | p99  221.5%
+  Fenster  365 Tage: max Anstieg   1129.8% (2020-03-17) -> noetige Margin  1130.3% => C=12.30 | p99  830.6%
+
+ETHUSDT:
+  Fenster    1 Tage: max Anstieg     30.5% (2021-01-03) -> noetige Margin    31.0% => C= 1.31 | p99   14.3%
+  Fenster    7 Tage: max Anstieg     76.8% (2021-01-02) -> noetige Margin    77.3% => C= 1.77 | p99   35.7%
+  Fenster   30 Tage: max Anstieg    147.7% (2020-12-12) -> noetige Margin   148.2% => C= 2.48 | p99  101.0%
+  Fenster   90 Tage: max Anstieg    317.7% (2020-11-16) -> noetige Margin   318.2% => C= 4.18 | p99  275.9%
+  Fenster  365 Tage: max Anstieg   2204.3% (2020-05-13) -> noetige Margin  2204.8% => C=23.05 | p99 1843.6%
+
+SOLUSDT:
+  Fenster    1 Tage: max Anstieg     60.8% (2021-01-08) -> noetige Margin    61.3% => C= 1.61 | p99   24.2%
+  Fenster    7 Tage: max Anstieg    121.1% (2021-02-18) -> noetige Margin   121.6% => C= 2.22 | p99   78.0%
+  Fenster   30 Tage: max Anstieg    431.5% (2021-08-11) -> noetige Margin   432.0% => C= 5.32 | p99  292.3%
+  Fenster   90 Tage: max Anstieg   1419.6% (2020-12-24) -> noetige Margin  1420.1% => C=15.20 | p99 1084.6%
+  Fenster  365 Tage: max Anstieg  21594.5% (2020-12-24) -> noetige Margin 21595.0% => C=216.95 | p99 15799.0%
+
+DOGEUSDT:
+  Fenster    1 Tage: max Anstieg    405.7% (2021-01-28) -> noetige Margin   406.2% => C= 5.06 | p99   29.5%
+  Fenster    7 Tage: max Anstieg   1080.5% (2021-01-28) -> noetige Margin  1081.0% => C=11.81 | p99  150.8%
+  Fenster   30 Tage: max Anstieg   1791.9% (2020-12-31) -> noetige Margin  1792.4% => C=18.92 | p99  850.7%
+  Fenster   90 Tage: max Anstieg   5970.9% (2021-01-28) -> noetige Margin  5971.4% => C=60.71 | p99 3057.4%
+  Fenster  365 Tage: max Anstieg  32055.0% (2020-07-05) -> noetige Margin 32055.5% => C=321.55 | p99 29818.8%
+
+-- Renditeverwaesserung durch Margin-Reserve (BTCUSDT, Taker, 1J Haltedauer) --
+  m=0.20 (5x), taegliches Nachschiessen noetig C= 1.20  netto p.a. =   9.50%
+  m=Puffer schlimmste 7-Tage-Spitze          C= 1.44  netto p.a. =   7.94%
+  m=Puffer schlimmste 30-Tage-Spitze         C= 2.33  netto p.a. =   4.89%
+  m=Puffer schlimmste 90-Tage-Spitze         C= 3.72  netto p.a. =   3.06%
+  m=1.00 (Margin = Nominal, ueberlebt ca. +100%) C= 2.00  netto p.a. =   5.70%
+
+-- Wie oft waere ein Short mit Margin-Quote m liquidiert worden? --
+   Annahme: Alle T Tage werden Spot-Gewinne realisiert und Margin auf m zurueckgesetzt.
+   Liquidation, wenn der Kurs innerhalb eines T-Tage-Fensters um mehr als (m - MMR) steigt.
+
+  BTCUSDT:
+    m=  10% (Liq. bei + 9.5%): T= 1d:   2.1% der Fenster | T= 7d:  21.1% der Fenster | T=30d:  56.1% der Fenster
+    m=  20% (Liq. bei +19.5%): T= 1d:   0.1% der Fenster | T= 7d:   4.8% der Fenster | T=30d:  27.6% der Fenster
+    m=  35% (Liq. bei +34.5%): T= 1d:   0.0% der Fenster | T= 7d:   0.4% der Fenster | T=30d:  10.2% der Fenster
+    m=  50% (Liq. bei +49.5%): T= 1d:   0.0% der Fenster | T= 7d:   0.0% der Fenster | T=30d:   3.3% der Fenster
+
+  ETHUSDT:
+    m=  10% (Liq. bei + 9.5%): T= 1d:   3.8% der Fenster | T= 7d:  32.6% der Fenster | T=30d:  62.4% der Fenster
+    m=  20% (Liq. bei +19.5%): T= 1d:   0.4% der Fenster | T= 7d:  10.0% der Fenster | T=30d:  39.7% der Fenster
+    m=  35% (Liq. bei +34.5%): T= 1d:   0.0% der Fenster | T= 7d:   1.3% der Fenster | T=30d:  21.0% der Fenster
+    m=  50% (Liq. bei +49.5%): T= 1d:   0.0% der Fenster | T= 7d:   0.4% der Fenster | T=30d:  11.1% der Fenster
+
+  SOLUSDT:
+    m=  10% (Liq. bei + 9.5%): T= 1d:  11.1% der Fenster | T= 7d:  46.7% der Fenster | T=30d:  70.6% der Fenster
+    m=  20% (Liq. bei +19.5%): T= 1d:   2.0% der Fenster | T= 7d:  20.1% der Fenster | T=30d:  49.6% der Fenster
+    m=  35% (Liq. bei +34.5%): T= 1d:   0.3% der Fenster | T= 7d:   7.8% der Fenster | T=30d:  30.7% der Fenster
+    m=  50% (Liq. bei +49.5%): T= 1d:   0.1% der Fenster | T= 7d:   4.1% der Fenster | T=30d:  21.1% der Fenster
+
+====================================================================================================
+TEIL 3 - VERDOPPELUNG IN 2 WOCHEN BIS 2 MONATEN
+====================================================================================================
+  Verdoppelung in  14 Tagen bei C=1.20:   120% auf Nominal =  8.57%/Tag = 2.857% je 8h-Zahlung =   3129% p.a. (einfach)
+  Verdoppelung in  14 Tagen bei C=1.50:   150% auf Nominal = 10.71%/Tag = 3.571% je 8h-Zahlung =   3911% p.a. (einfach)
+  Verdoppelung in  30 Tagen bei C=1.20:   120% auf Nominal =  4.00%/Tag = 1.333% je 8h-Zahlung =   1460% p.a. (einfach)
+  Verdoppelung in  30 Tagen bei C=1.50:   150% auf Nominal =  5.00%/Tag = 1.667% je 8h-Zahlung =   1825% p.a. (einfach)
+  Verdoppelung in  60 Tagen bei C=1.20:   120% auf Nominal =  2.00%/Tag = 0.667% je 8h-Zahlung =    730% p.a. (einfach)
+  Verdoppelung in  60 Tagen bei C=1.50:   150% auf Nominal =  2.50%/Tag = 0.833% je 8h-Zahlung =    912% p.a. (einfach)
+
+  Binance-Hardcap der 8h-Funding-Rate fuer BTCUSDT: +/-0.75% (fuer viele Alts +/-2.00%).
+
+-- Bestes rollierendes Fenster der Historie (brutto auf Nominal) --
+
+  Horizont 14 Tage:
+  symbol  best_14d_%       ende  auf_Kapital_C1.20_%  tage_ueber_100%_Kapital
+ BTCUSDT        5.06 2021-02-20                 4.22                        0
+ ETHUSDT        5.59 2021-02-20                 4.65                        0
+ SOLUSDT        6.38 2021-02-16                 5.31                        0
+ BNBUSDT        7.21 2021-02-22                 6.01                        0
+ XRPUSDT        7.02 2021-02-14                 5.85                        0
+DOGEUSDT        8.23 2021-02-20                 6.86                        0
+
+  Horizont 30 Tage:
+  symbol  best_30d_%       ende  auf_Kapital_C1.20_%  tage_ueber_100%_Kapital
+ BTCUSDT        7.70 2021-02-27                 6.41                        0
+ ETHUSDT        9.77 2021-02-22                 8.14                        0
+ SOLUSDT        9.61 2021-02-22                 8.01                        0
+ BNBUSDT        8.03 2021-03-10                 6.69                        0
+ XRPUSDT       11.88 2021-02-22                 9.90                        0
+DOGEUSDT        9.68 2021-03-03                 8.07                        0
+
+  Horizont 60 Tage:
+  symbol  best_60d_%       ende  auf_Kapital_C1.20_%  tage_ueber_100%_Kapital
+ BTCUSDT       13.64 2021-02-24                11.37                        0
+ ETHUSDT       17.54 2021-02-24                14.62                        0
+ SOLUSDT       14.72 2021-04-03                12.27                        0
+ BNBUSDT       13.31 2021-02-22                11.09                        0
+ XRPUSDT       18.75 2021-03-03                15.63                        0
+DOGEUSDT       17.17 2021-04-06                14.31                        0
+
+-- Hoechste jemals erreichte annualisierte Funding-Raten (rollierend 7 Tage) --
+  BTCUSDT   max      140% p.a. (2021-02-14) | Anteil Tage >50%:  4.78%  >100%:  0.99%  >300%:  0.00%  >600%:  0.00%
+  ETHUSDT   max      181% p.a. (2021-01-10) | Anteil Tage >50%:  6.71%  >100%:  1.85%  >300%:  0.00%  >600%:  0.00%
+  SOLUSDT   max      208% p.a. (2021-02-14) | Anteil Tage >50%:  4.79%  >100%:  1.06%  >300%:  0.00%  >600%:  0.00%
+  BNBUSDT   max      213% p.a. (2021-02-15) | Anteil Tage >50%:  4.60%  >100%:  1.42%  >300%:  0.00%  >600%:  0.00%
+  XRPUSDT   max      214% p.a. (2021-04-17) | Anteil Tage >50%:  8.13%  >100%:  2.72%  >300%:  0.00%  >600%:  0.00%
+  DOGEUSDT  max      233% p.a. (2021-02-14) | Anteil Tage >50%:  5.81%  >100%:  1.97%  >300%:  0.00%  >600%:  0.00%
+
+-- Gab es 60-Tage-Fenster mit >=100% Rendite auf Kapital (C=1.20)? --
+  BTCUSDT      0 von 2376 Fenstern (0.00%)  | bestes Fenster: 11.4% auf Kapital
+  ETHUSDT      0 von 2376 Fenstern (0.00%)  | bestes Fenster: 14.6% auf Kapital
+  SOLUSDT      0 von 2120 Fenstern (0.00%)  | bestes Fenster: 12.3% auf Kapital
+  BNBUSDT      0 von 2336 Fenstern (0.00%)  | bestes Fenster: 11.1% auf Kapital
+  XRPUSDT      0 von 2371 Fenstern (0.00%)  | bestes Fenster: 15.6% auf Kapital
+  DOGEUSDT     0 von 2185 Fenstern (0.00%)  | bestes Fenster: 14.3% auf Kapital
