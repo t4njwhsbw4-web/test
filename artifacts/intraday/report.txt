@@ -1,0 +1,102 @@
+HOLDOUT: 95,409 Bars  2023-12-29 00:30:00+00:00 .. 2026-09-17 20:30:00+00:00
+
+--- Buy & Hold (Referenz, DEV) ---
+buyhold BTCUSDT                                gross_SR=  0.85  net_SR=   0.85  trades=     1 (       0/J)  gross_bps/Trade=90037.87  net_bps/Trade=90017.87  exposure=1.00
+buyhold ETHUSDT                                gross_SR=  0.82  net_SR=   0.82  trades=     1 (       0/J)  gross_bps/Trade=68966.44  net_bps/Trade=68946.44  exposure=1.00
+
+--- DEV: alle Kandidaten ---
+BTCUSDT momentum {'lookback': 1}               gross_SR= -0.58  net_SR= -13.61  trades= 28878 (    4545/J)  gross_bps/Trade=  -0.93  net_bps/Trade= -20.93  exposure=0.77
+BTCUSDT momentum {'lookback': 2}               gross_SR= -0.96  net_SR= -15.38  trades= 29754 (    4683/J)  gross_bps/Trade=  -1.37  net_bps/Trade= -21.37  exposure=0.69
+BTCUSDT momentum {'lookback': 4}               gross_SR= -0.10  net_SR= -10.30  trades= 19923 (    3136/J)  gross_bps/Trade=  -0.27  net_bps/Trade= -20.27  exposure=0.64
+BTCUSDT momentum {'lookback': 8}               gross_SR= -0.40  net_SR=  -7.84  trades= 14082 (    2216/J)  gross_bps/Trade=  -1.17  net_bps/Trade= -21.17  exposure=0.60
+BTCUSDT momentum {'lookback': 16}              gross_SR=  0.20  net_SR=  -5.39  trades= 10213 (    1608/J)  gross_bps/Trade=   0.61  net_bps/Trade= -19.39  exposure=0.58
+BTCUSDT momentum {'lookback': 32}              gross_SR=  0.32  net_SR=  -3.81  trades=  7365 (    1159/J)  gross_bps/Trade=   1.38  net_bps/Trade= -18.62  exposure=0.56
+BTCUSDT reversion {'window': 20, 'z_thresh': 1.5} gross_SR=  1.35  net_SR=  -9.22  trades= 16387 (    2579/J)  gross_bps/Trade=   2.42  net_bps/Trade= -17.58  exposure=0.25
+BTCUSDT reversion {'window': 20, 'z_thresh': 2.0} gross_SR=  1.77  net_SR=  -6.94  trades= 11649 (    1834/J)  gross_bps/Trade=   3.97  net_bps/Trade= -16.03  exposure=0.16
+BTCUSDT reversion {'window': 20, 'z_thresh': 2.5} gross_SR=  1.31  net_SR=  -5.27  trades=  7596 (    1196/J)  gross_bps/Trade=   3.87  net_bps/Trade= -16.13  exposure=0.10
+BTCUSDT reversion {'window': 20, 'z_thresh': 3.0} gross_SR=  1.21  net_SR=  -3.72  trades=  4866 (     766/J)  gross_bps/Trade=   4.82  net_bps/Trade= -15.18  exposure=0.06
+BTCUSDT reversion {'window': 50, 'z_thresh': 1.5} gross_SR=  1.75  net_SR=  -7.77  trades= 14623 (    2302/J)  gross_bps/Trade=   3.51  net_bps/Trade= -16.49  exposure=0.22
+BTCUSDT reversion {'window': 50, 'z_thresh': 2.0} gross_SR=  1.39  net_SR=  -6.06  trades= 10032 (    1579/J)  gross_bps/Trade=   3.54  net_bps/Trade= -16.46  exposure=0.14
+BTCUSDT reversion {'window': 50, 'z_thresh': 2.5} gross_SR=  0.98  net_SR=  -4.69  trades=  6651 (    1047/J)  gross_bps/Trade=   3.31  net_bps/Trade= -16.69  exposure=0.09
+BTCUSDT reversion {'window': 50, 'z_thresh': 3.0} gross_SR=  0.86  net_SR=  -3.50  trades=  4513 (     710/J)  gross_bps/Trade=   3.75  net_bps/Trade= -16.25  exposure=0.06
+BTCUSDT reversion {'window': 100, 'z_thresh': 1.5} gross_SR=  1.75  net_SR=  -7.07  trades= 13608 (    2142/J)  gross_bps/Trade=   3.78  net_bps/Trade= -16.22  exposure=0.20
+BTCUSDT reversion {'window': 100, 'z_thresh': 2.0} gross_SR=  1.36  net_SR=  -5.36  trades=  9103 (    1433/J)  gross_bps/Trade=   3.82  net_bps/Trade= -16.18  exposure=0.13
+BTCUSDT reversion {'window': 100, 'z_thresh': 2.5} gross_SR=  1.02  net_SR=  -4.04  trades=  6082 (     957/J)  gross_bps/Trade=   3.83  net_bps/Trade= -16.17  exposure=0.08
+BTCUSDT reversion {'window': 100, 'z_thresh': 3.0} gross_SR=  0.85  net_SR=  -3.07  trades=  4158 (     654/J)  gross_bps/Trade=   4.13  net_bps/Trade= -15.87  exposure=0.06
+BTCUSDT breakout {'vol_window': 20, 'brk_window': 8, 'q': 0.2} gross_SR= -0.90  net_SR=  -9.87  trades=  4795 (     755/J)  gross_bps/Trade=  -1.97  net_bps/Trade= -21.97  exposure=0.07
+BTCUSDT breakout {'vol_window': 20, 'brk_window': 8, 'q': 0.35} gross_SR= -0.90  net_SR= -11.52  trades=  7344 (    1156/J)  gross_bps/Trade=  -1.67  net_bps/Trade= -21.67  exposure=0.11
+BTCUSDT breakout {'vol_window': 20, 'brk_window': 16, 'q': 0.2} gross_SR= -1.16  net_SR=  -8.39  trades=  3349 (     527/J)  gross_bps/Trade=  -3.14  net_bps/Trade= -23.14  exposure=0.05
+BTCUSDT breakout {'vol_window': 20, 'brk_window': 16, 'q': 0.35} gross_SR= -1.04  net_SR=  -9.64  trades=  5119 (     806/J)  gross_bps/Trade=  -2.38  net_bps/Trade= -22.38  exposure=0.07
+BTCUSDT breakout {'vol_window': 20, 'brk_window': 32, 'q': 0.2} gross_SR= -0.83  net_SR=  -6.12  trades=  2082 (     328/J)  gross_bps/Trade=  -3.08  net_bps/Trade= -23.08  exposure=0.03
+BTCUSDT breakout {'vol_window': 20, 'brk_window': 32, 'q': 0.35} gross_SR= -0.79  net_SR=  -7.13  trades=  3242 (     510/J)  gross_bps/Trade=  -2.45  net_bps/Trade= -22.45  exposure=0.05
+BTCUSDT breakout {'vol_window': 50, 'brk_window': 8, 'q': 0.2} gross_SR=  0.99  net_SR=  -7.27  trades=  4562 (     718/J)  gross_bps/Trade=   2.37  net_bps/Trade= -17.63  exposure=0.07
+BTCUSDT breakout {'vol_window': 50, 'brk_window': 8, 'q': 0.35} gross_SR=  0.55  net_SR=  -9.55  trades=  7046 (    1109/J)  gross_bps/Trade=   1.08  net_bps/Trade= -18.92  exposure=0.11
+BTCUSDT breakout {'vol_window': 50, 'brk_window': 16, 'q': 0.2} gross_SR=  0.85  net_SR=  -5.73  trades=  3158 (     497/J)  gross_bps/Trade=   2.55  net_bps/Trade= -17.45  exposure=0.05
+BTCUSDT breakout {'vol_window': 50, 'brk_window': 16, 'q': 0.35} gross_SR=  0.59  net_SR=  -7.43  trades=  4841 (     762/J)  gross_bps/Trade=   1.47  net_bps/Trade= -18.53  exposure=0.07
+BTCUSDT breakout {'vol_window': 50, 'brk_window': 32, 'q': 0.2} gross_SR=  0.86  net_SR=  -4.17  trades=  2140 (     337/J)  gross_bps/Trade=   3.38  net_bps/Trade= -16.62  exposure=0.03
+BTCUSDT breakout {'vol_window': 50, 'brk_window': 32, 'q': 0.35} gross_SR=  0.79  net_SR=  -5.29  trades=  3260 (     513/J)  gross_bps/Trade=   2.60  net_bps/Trade= -17.40  exposure=0.05
+ETHUSDT momentum {'lookback': 1}               gross_SR= -0.07  net_SR= -10.95  trades= 29033 (    4570/J)  gross_bps/Trade=  -0.20  net_bps/Trade= -20.20  exposure=0.76
+ETHUSDT momentum {'lookback': 2}               gross_SR= -0.34  net_SR= -12.27  trades= 29515 (    4646/J)  gross_bps/Trade=  -0.62  net_bps/Trade= -20.62  exposure=0.68
+ETHUSDT momentum {'lookback': 4}               gross_SR=  0.69  net_SR=  -7.72  trades= 19807 (    3118/J)  gross_bps/Trade=   1.53  net_bps/Trade= -18.47  exposure=0.63
+ETHUSDT momentum {'lookback': 8}               gross_SR=  0.27  net_SR=  -5.90  trades= 13874 (    2184/J)  gross_bps/Trade=   0.73  net_bps/Trade= -19.27  exposure=0.60
+ETHUSDT momentum {'lookback': 16}              gross_SR=  0.66  net_SR=  -3.82  trades=  9826 (    1547/J)  gross_bps/Trade=   2.77  net_bps/Trade= -17.23  exposure=0.57
+ETHUSDT momentum {'lookback': 32}              gross_SR=  0.82  net_SR=  -2.42  trades=  6886 (    1084/J)  gross_bps/Trade=   4.92  net_bps/Trade= -15.08  exposure=0.55
+ETHUSDT reversion {'window': 20, 'z_thresh': 1.5} gross_SR=  1.03  net_SR=  -7.73  trades= 16548 (    2605/J)  gross_bps/Trade=   2.18  net_bps/Trade= -17.82  exposure=0.25
+ETHUSDT reversion {'window': 20, 'z_thresh': 2.0} gross_SR=  1.17  net_SR=  -6.17  trades= 12037 (    1895/J)  gross_bps/Trade=   2.99  net_bps/Trade= -17.01  exposure=0.16
+ETHUSDT reversion {'window': 20, 'z_thresh': 2.5} gross_SR=  1.31  net_SR=  -4.39  trades=  8033 (    1264/J)  gross_bps/Trade=   4.43  net_bps/Trade= -15.57  exposure=0.10
+ETHUSDT reversion {'window': 20, 'z_thresh': 3.0} gross_SR=  1.41  net_SR=  -2.83  trades=  5160 (     812/J)  gross_bps/Trade=   6.49  net_bps/Trade= -13.51  exposure=0.06
+ETHUSDT reversion {'window': 50, 'z_thresh': 1.5} gross_SR=  1.47  net_SR=  -6.56  trades= 15024 (    2365/J)  gross_bps/Trade=   3.44  net_bps/Trade= -16.56  exposure=0.23
+ETHUSDT reversion {'window': 50, 'z_thresh': 2.0} gross_SR=  1.35  net_SR=  -4.98  trades= 10498 (    1652/J)  gross_bps/Trade=   4.00  net_bps/Trade= -16.00  exposure=0.15
+ETHUSDT reversion {'window': 50, 'z_thresh': 2.5} gross_SR=  1.07  net_SR=  -3.71  trades=  6996 (    1101/J)  gross_bps/Trade=   4.13  net_bps/Trade= -15.87  exposure=0.09
+ETHUSDT reversion {'window': 50, 'z_thresh': 3.0} gross_SR=  1.11  net_SR=  -2.61  trades=  4790 (     754/J)  gross_bps/Trade=   5.63  net_bps/Trade= -14.37  exposure=0.06
+ETHUSDT reversion {'window': 100, 'z_thresh': 1.5} gross_SR=  1.45  net_SR=  -6.10  trades= 14169 (    2230/J)  gross_bps/Trade=   3.58  net_bps/Trade= -16.42  exposure=0.22
+ETHUSDT reversion {'window': 100, 'z_thresh': 2.0} gross_SR=  1.21  net_SR=  -4.56  trades=  9651 (    1519/J)  gross_bps/Trade=   3.91  net_bps/Trade= -16.09  exposure=0.14
+ETHUSDT reversion {'window': 100, 'z_thresh': 2.5} gross_SR=  0.90  net_SR=  -3.40  trades=  6417 (    1010/J)  gross_bps/Trade=   3.81  net_bps/Trade= -16.19  exposure=0.09
+ETHUSDT reversion {'window': 100, 'z_thresh': 3.0} gross_SR=  0.88  net_SR=  -2.40  trades=  4385 (     690/J)  gross_bps/Trade=   4.93  net_bps/Trade= -15.07  exposure=0.06
+ETHUSDT breakout {'vol_window': 20, 'brk_window': 8, 'q': 0.2} gross_SR=  0.38  net_SR=  -6.92  trades=  4785 (     753/J)  gross_bps/Trade=   1.04  net_bps/Trade= -18.96  exposure=0.07
+ETHUSDT breakout {'vol_window': 20, 'brk_window': 8, 'q': 0.35} gross_SR=  0.43  net_SR=  -8.18  trades=  7266 (    1144/J)  gross_bps/Trade=   0.99  net_bps/Trade= -19.01  exposure=0.11
+ETHUSDT breakout {'vol_window': 20, 'brk_window': 16, 'q': 0.2} gross_SR=  0.45  net_SR=  -5.41  trades=  3320 (     523/J)  gross_bps/Trade=   1.51  net_bps/Trade= -18.49  exposure=0.05
+ETHUSDT breakout {'vol_window': 20, 'brk_window': 16, 'q': 0.35} gross_SR=  0.51  net_SR=  -6.36  trades=  4994 (     786/J)  gross_bps/Trade=   1.47  net_bps/Trade= -18.53  exposure=0.07
+ETHUSDT breakout {'vol_window': 20, 'brk_window': 32, 'q': 0.2} gross_SR=  0.21  net_SR=  -4.08  trades=  2029 (     319/J)  gross_bps/Trade=   0.98  net_bps/Trade= -19.02  exposure=0.03
+ETHUSDT breakout {'vol_window': 20, 'brk_window': 32, 'q': 0.35} gross_SR=  0.31  net_SR=  -4.75  trades=  3135 (     493/J)  gross_bps/Trade=   1.23  net_bps/Trade= -18.77  exposure=0.05
+ETHUSDT breakout {'vol_window': 50, 'brk_window': 8, 'q': 0.2} gross_SR=  1.02  net_SR=  -6.29  trades=  4576 (     720/J)  gross_bps/Trade=   2.81  net_bps/Trade= -17.19  exposure=0.07
+ETHUSDT breakout {'vol_window': 50, 'brk_window': 8, 'q': 0.35} gross_SR=  0.48  net_SR=  -8.20  trades=  6967 (    1097/J)  gross_bps/Trade=   1.12  net_bps/Trade= -18.88  exposure=0.11
+ETHUSDT breakout {'vol_window': 50, 'brk_window': 16, 'q': 0.2} gross_SR=  1.12  net_SR=  -4.65  trades=  3071 (     483/J)  gross_bps/Trade=   3.90  net_bps/Trade= -16.10  exposure=0.05
+ETHUSDT breakout {'vol_window': 50, 'brk_window': 16, 'q': 0.35} gross_SR=  0.54  net_SR=  -6.38  trades=  4708 (     741/J)  gross_bps/Trade=   1.55  net_bps/Trade= -18.45  exposure=0.07
+ETHUSDT breakout {'vol_window': 50, 'brk_window': 32, 'q': 0.2} gross_SR=  1.01  net_SR=  -3.44  trades=  2053 (     323/J)  gross_bps/Trade=   4.56  net_bps/Trade= -15.44  exposure=0.03
+ETHUSDT breakout {'vol_window': 50, 'brk_window': 32, 'q': 0.35} gross_SR=  0.75  net_SR=  -4.51  trades=  3107 (     489/J)  gross_bps/Trade=   2.84  net_bps/Trade= -17.16  exposure=0.05
+
+--- DEV: Top 5 nach Netto-Sharpe ---
+ETHUSDT reversion {'window': 100, 'z_thresh': 3.0} gross_SR=  0.88  net_SR=  -2.40  trades=  4385 (     690/J)  gross_bps/Trade=   4.93  net_bps/Trade= -15.07  exposure=0.06
+ETHUSDT momentum {'lookback': 32}              gross_SR=  0.82  net_SR=  -2.42  trades=  6886 (    1084/J)  gross_bps/Trade=   4.92  net_bps/Trade= -15.08  exposure=0.55
+ETHUSDT reversion {'window': 50, 'z_thresh': 3.0} gross_SR=  1.11  net_SR=  -2.61  trades=  4790 (     754/J)  gross_bps/Trade=   5.63  net_bps/Trade= -14.37  exposure=0.06
+ETHUSDT reversion {'window': 20, 'z_thresh': 3.0} gross_SR=  1.41  net_SR=  -2.83  trades=  5160 (     812/J)  gross_bps/Trade=   6.49  net_bps/Trade= -13.51  exposure=0.06
+BTCUSDT reversion {'window': 100, 'z_thresh': 3.0} gross_SR=  0.85  net_SR=  -3.07  trades=  4158 (     654/J)  gross_bps/Trade=   4.13  net_bps/Trade= -15.87  exposure=0.06
+
+--- DEV: Top 5 nach BRUTTO-Sharpe (wo ist ueberhaupt Edge?) ---
+BTCUSDT reversion {'window': 20, 'z_thresh': 2.0} gross_SR=  1.77  net_SR=  -6.94  trades= 11649 (    1834/J)  gross_bps/Trade=   3.97  net_bps/Trade= -16.03  exposure=0.16
+BTCUSDT reversion {'window': 100, 'z_thresh': 1.5} gross_SR=  1.75  net_SR=  -7.07  trades= 13608 (    2142/J)  gross_bps/Trade=   3.78  net_bps/Trade= -16.22  exposure=0.20
+BTCUSDT reversion {'window': 50, 'z_thresh': 1.5} gross_SR=  1.75  net_SR=  -7.77  trades= 14623 (    2302/J)  gross_bps/Trade=   3.51  net_bps/Trade= -16.49  exposure=0.22
+ETHUSDT reversion {'window': 50, 'z_thresh': 1.5} gross_SR=  1.47  net_SR=  -6.56  trades= 15024 (    2365/J)  gross_bps/Trade=   3.44  net_bps/Trade= -16.56  exposure=0.23
+ETHUSDT reversion {'window': 100, 'z_thresh': 1.5} gross_SR=  1.45  net_SR=  -6.10  trades= 14169 (    2230/J)  gross_bps/Trade=   3.58  net_bps/Trade= -16.42  exposure=0.22
+
+--- DEV: bester Brutto-bps/Trade ---
+ETHUSDT reversion {'window': 20, 'z_thresh': 3.0} gross_SR=  1.41  net_SR=  -2.83  trades=  5160 (     812/J)  gross_bps/Trade=   6.49  net_bps/Trade= -13.51  exposure=0.06
+ETHUSDT reversion {'window': 50, 'z_thresh': 3.0} gross_SR=  1.11  net_SR=  -2.61  trades=  4790 (     754/J)  gross_bps/Trade=   5.63  net_bps/Trade= -14.37  exposure=0.06
+ETHUSDT reversion {'window': 100, 'z_thresh': 3.0} gross_SR=  0.88  net_SR=  -2.40  trades=  4385 (     690/J)  gross_bps/Trade=   4.93  net_bps/Trade= -15.07  exposure=0.06
+ETHUSDT momentum {'lookback': 32}              gross_SR=  0.82  net_SR=  -2.42  trades=  6886 (    1084/J)  gross_bps/Trade=   4.92  net_bps/Trade= -15.08  exposure=0.55
+BTCUSDT reversion {'window': 20, 'z_thresh': 3.0} gross_SR=  1.21  net_SR=  -3.72  trades=  4866 (     766/J)  gross_bps/Trade=   4.82  net_bps/Trade= -15.18  exposure=0.06
+
+====================================================================================================
+HOLDOUT (einmalige Bewertung)
+====================================================================================================
+buyhold BTCUSDT                                gross_SR=  0.69  net_SR=   0.69  trades=     1 (       0/J)  gross_bps/Trade=7965.17  net_bps/Trade=7945.17  exposure=1.00
+buyhold ETHUSDT                                gross_SR=  0.35  net_SR=   0.35  trades=     1 (       0/J)  gross_bps/Trade= 387.30  net_bps/Trade= 367.30  exposure=1.00
+BTCUSDT momentum {'lookback': 32}              gross_SR=  0.87  net_SR=  -5.39  trades=  2918 (    1072/J)  gross_bps/Trade=   2.78  net_bps/Trade= -17.22  exposure=0.56
+BTCUSDT reversion {'window': 100, 'z_thresh': 3.0} gross_SR=  0.54  net_SR=  -7.02  trades=  1970 (     724/J)  gross_bps/Trade=   1.36  net_bps/Trade= -18.64  exposure=0.06
+BTCUSDT breakout {'vol_window': 50, 'brk_window': 32, 'q': 0.2} gross_SR= -0.65  net_SR=  -9.31  trades=   809 (     297/J)  gross_bps/Trade=  -1.39  net_bps/Trade= -21.39  exposure=0.03
+ETHUSDT momentum {'lookback': 32}              gross_SR=  1.29  net_SR=  -3.28  trades=  2863 (    1051/J)  gross_bps/Trade=   5.79  net_bps/Trade= -14.21  exposure=0.56
+ETHUSDT reversion {'window': 100, 'z_thresh': 3.0} gross_SR=  0.13  net_SR=  -5.44  trades=  1988 (     730/J)  gross_bps/Trade=   0.44  net_bps/Trade= -19.56  exposure=0.06
+ETHUSDT breakout {'vol_window': 50, 'brk_window': 32, 'q': 0.2} gross_SR= -1.05  net_SR=  -8.28  trades=   896 (     329/J)  gross_bps/Trade=  -2.76  net_bps/Trade= -22.76  exposure=0.03
+
+[exited with code 0]
