@@ -9,8 +9,15 @@ var CSS=''
 +'.nvq h3{font-size:22px;margin:0}'
 +'.nvq-sub{color:var(--grey-3);font-size:15.5px;margin:8px 0 0}'
 +'.nvq-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:22px}'
-+'.nvq-opt{text-align:left;background:var(--white);border:1px solid var(--grey-2);border-radius:4px;padding:15px 17px;font-family:var(--text);font-size:15.5px;color:var(--ink);cursor:pointer;transition:border-color .2s,background .2s}'
-+'.nvq-opt:hover{border-color:var(--ink)}'
++'.nvq-opt{position:relative;text-align:left;background:var(--white);border:1px solid var(--grey-2);border-radius:4px;padding:16px 18px 16px 52px;font-family:var(--text);font-size:15.5px;color:var(--ink);cursor:pointer;transition:border-color .2s,background .2s,box-shadow .2s,transform .2s}'
++'.nvq-opt::before{content:"";position:absolute;left:19px;top:50%;margin-top:-10px;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--grey-2);background:var(--white);transition:border-color .2s,background .2s}'
++'.nvq-opt::after{content:"";position:absolute;left:25px;top:50%;margin-top:-4px;width:8px;height:8px;border-radius:50%;background:var(--pink);opacity:0;transform:scale(.4);transition:opacity .2s,transform .2s}'
++'.nvq-opt:hover,.nvq-opt:focus-visible{border-color:var(--pink);background:#FFF9FD;box-shadow:0 8px 20px rgba(247,146,208,.16);transform:translateY(-1px);outline:none}'
++'.nvq-opt:hover::before,.nvq-opt:focus-visible::before{border-color:var(--pink)}'
++'.nvq-opt:hover::after,.nvq-opt:focus-visible::after{opacity:1;transform:scale(1)}'
++'.nvq-opt:active{transform:none;background:#FDEFF8}'
++'.nvq-hint{display:inline-flex;align-items:center;gap:7px;margin-top:14px;font-family:var(--display);font-weight:700;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--pink)}'
++'.nvq-hint::before{content:"";width:16px;height:2px;background:var(--pink)}'
 +'.nvq-opt b{display:block;font-family:var(--display);font-weight:700;font-size:16px;margin-bottom:2px}'
 +'.nvq-opt span{color:var(--grey-3);font-size:13.5px}'
 +'.nvq-foot{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:22px}'
@@ -86,6 +93,7 @@ top.appendChild(el('span','nvq-step','Schritt '+step+' von 3'));
 box.appendChild(top);
 box.appendChild(el('h3',null,head));
 if(sub)box.appendChild(el('p','nvq-sub',sub));
+box.appendChild(el('span','nvq-hint','Bitte auswählen'));
 var grid=el('div','nvq-opts');
 opts.forEach(function(o){
 var b=el('button','nvq-opt','<b>'+o.t+'</b><span>'+(o.s||'')+'</span>');
