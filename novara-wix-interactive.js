@@ -49,7 +49,7 @@ var CSS=''
 +'.nvbar-btn{background:var(--pink);color:var(--ink);font-family:var(--display);font-weight:700;font-size:15px;padding:11px 26px;border:0;border-radius:4px;cursor:pointer;white-space:nowrap;transition:box-shadow .2s}'
 +'.nvbar-btn:hover{box-shadow:0 8px 22px rgba(247,146,208,.35)}'
 +'#nv-host{padding-bottom:64px}'
-+'@media(max-width:620px){.nvbar-in{padding:9px 16px;gap:10px}.nvbar-txt{display:none}.nvbar-ac{flex:1;justify-content:space-between}.nvbar-btn{flex:1;text-align:center}}'
++'@media(max-width:620px){.nvbar-in{padding:9px 16px;gap:10px}.nvbar-txt{display:none}.nvbar-ac{flex:1;gap:12px}.nvbar-btn{flex:1;text-align:center}}'
 +'@media(min-width:721px){.nvbar-tel{display:none}}';
 var FLOW={
 einzel:{label:'Einzelne Videos',q:'Wie viele Videos brauchen Sie?',opts:[
@@ -176,10 +176,9 @@ var txt=el('span','nvbar-txt','Videos <b>ab CHF 250</b> · Antwort innert 24 Stu
 txt.id='nv-bar-txt';
 var ac=el('div','nvbar-ac');
 var wa=el('a','nvbar-ico nvbar-wa',SVGW);wa.href=WA;wa.target='_blank';wa.rel='noopener';wa.setAttribute('aria-label','WhatsApp');
-var te=el('a','nvbar-ico nvbar-tel',SVGT);te.href=TEL;te.setAttribute('aria-label','Anrufen');
 var btn=el('button','nvbar-btn','Anfragen');btn.type='button';
 btn.addEventListener('click',function(){var k=document.getElementById('kontakt');if(k)k.scrollIntoView({behavior:'smooth',block:'start'})});
-ac.appendChild(wa);ac.appendChild(te);ac.appendChild(btn);
+ac.appendChild(wa);ac.appendChild(btn);
 inner.appendChild(txt);inner.appendChild(ac);bar.appendChild(inner);
 h.appendChild(bar);
 var k=document.getElementById('kontakt');
