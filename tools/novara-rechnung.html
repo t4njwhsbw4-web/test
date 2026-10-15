@@ -25,7 +25,9 @@ button.x{background:var(--g1);color:#999;padding:0}
 .hint{font-size:12px;color:var(--g3);margin-top:10px;line-height:1.5}
 .phead{margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--g2)}
 .phead b{display:block;font-size:19px;letter-spacing:-.01em}
-.phead span{display:block;font-size:13px;color:var(--g3);margin-top:3px}
+.phead span{display:block;font-size:12.5px;color:var(--g3);margin-top:10px;line-height:1.5}
+.steps{margin:10px 0 0 18px;padding:0;font-size:13px;color:var(--g3);line-height:1.6}
+.steps li{margin-bottom:2px}
 .slabel{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#fff;opacity:.7;margin-bottom:8px}
 /* ---------- Beleg ---------- */
 .sheet{background:#fff;width:210mm;height:297mm;overflow:hidden;position:relative;box-shadow:0 10px 40px rgba(0,0,0,.3)}
@@ -87,7 +89,14 @@ tfoot tr.sum td{border-top:1.5px solid var(--ink);font-weight:700;font-size:11.5
 <body>
 <div class="app">
 <div class="panel noprint">
-  <div class="phead"><b>Rechnung erstellen</b><span>Ausfüllen, dann unten „Als PDF speichern"</span></div>
+  <div class="phead"><b>Rechnung erstellen</b>
+    <ol class="steps">
+      <li>Vorlage wählen oder Positionen selber eintragen</li>
+      <li>Kunde und Rechnungsnummer ausfüllen</li>
+      <li>Unten „Als PDF speichern" drücken, PDF dem Kunden schicken</li>
+    </ol>
+    <span>Öffne die Datei vom Gerät aus, nicht in der Drive-Vorschau. Sonst ist das Speichern gesperrt.</span>
+  </div>
   <h2>Kunde</h2>
   <label>Firma / Name</label><input id="kName" placeholder="Muster AG">
   <label>Strasse und Nummer</label><input id="kStr" placeholder="Bahnhofstrasse 1">
@@ -100,7 +109,12 @@ tfoot tr.sum td{border-top:1.5px solid var(--ink);font-weight:700;font-size:11.5
   <label>Mitteilung auf dem Zahlteil</label><input id="rMsg" placeholder="Rechnung 2026-001">
 
   <h2>Positionen</h2>
-  <label>Angebot auswählen</label>
+  <label>Vorlage</label>
+  <div class="row">
+    <select id="vorl"></select>
+    <div style="flex:0 0 118px;display:flex;align-items:flex-end"><button class="sec" style="width:100%" onclick="useVorlage()">Einsetzen</button></div>
+  </div>
+  <label style="margin-top:14px">Einzelne Position hinzufügen</label>
   <select id="kat"></select>
   <div class="row" style="margin-top:8px">
     <div style="flex:0 0 70px"><label>Anzahl</label><input id="katM" type="number" value="1" min="1"></div>
@@ -192,6 +206,30 @@ var KATALOG=[
  {t:'Zusätzliches Format oder Schnittfassung',p:0},
  {t:'Reiseaufwand ausserhalb des vereinbarten Gebiets',p:0}
 ];
+var VORLAGEN=[
+ {n:'Unternehmensfilm',titel:'Unternehmensfilm',pos:[['Unternehmensfilm, 60 bis 90 Sekunden',1,890]]},
+ {n:'Drei Videos aus einem Dreh',titel:'Videoproduktion',pos:[['Einzelnes Video ab drei aus einem Drehtermin',3,200]]},
+ {n:'Einzelnes Video',titel:'Videoproduktion',pos:[['Einzelnes Video, 15 bis 45 Sekunden',1,250]]},
+ {n:'Content-Partnerschaft, ein Monat',titel:'Content-Partnerschaft',pos:[['Content-Partnerschaft, Monatsbeitrag',1,590]]},
+ {n:'Immobilien-Objektvideo',titel:'Immobilien-Objektvideo',pos:[['Immobilien-Objektvideo, 60 bis 90 Sekunden',1,550]]},
+ {n:'Eventvideo',titel:'Eventvideo',pos:[['Eventvideo',1,250]]},
+ {n:'Leere Rechnung',titel:'Videoproduktion',pos:[]}
+];
+function fillVorl(){
+  var sel=$('vorl');sel.innerHTML='';
+  VORLAGEN.forEach(function(v,i){
+    var o=document.createElement('option');
+    o.value=i;o.textContent=v.n;
+    sel.appendChild(o);
+  });
+}
+function useVorlage(){
+  var v=VORLAGEN[parseInt($('vorl').value,10)||0];
+  ITEMS=[];
+  v.pos.forEach(function(p){ITEMS.push({t:p[0],m:p[1],p:p[2]})});
+  $('rTitel').value=v.titel;
+  drawItems();render();
+}
 function fillKat(){
   var sel=$('kat');sel.innerHTML='';
   KATALOG.forEach(function(k,i){
@@ -325,6 +363,7 @@ window.addEventListener('resize',fit);
 window.addEventListener('beforeprint',function(){$('sheet').style.transform='none';$('stage').style.height='auto'});
 window.addEventListener('afterprint',fit);
 fillKat();
+fillVorl();
 load();
 $('rDat').value=new Date().toISOString().slice(0,10);
 addItem('Unternehmensfilm, 60 bis 90 Sekunden',1,890);
